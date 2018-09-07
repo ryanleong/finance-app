@@ -12,9 +12,11 @@ module.exports = {
         "import/no-extraneous-dependencies": 0,
         "indent": ["error", 4],
         "react/no-unused-state": 0,
-
         "react/prop-types": ["error", {
-            ignore: [ "children" ], // ignore children for Context API
+            ignore: [
+                "children", // ignore children for Context API
+                "history" // ignore history for react router
+            ],
         }],
 
         "max-len": ["error", { "code": 140, "tabWidth": 4 }],
