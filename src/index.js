@@ -4,7 +4,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import store from './store';
+import Auth from './HOC/Auth';
+
 import Register from './containers/Register';
+import Login from './containers/Login';
 import Home from './containers/Home';
 import './index.scss';
 
@@ -14,10 +17,9 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <Route path="/register" component={Register} />
-                <Route path="/">
-                    <Home />
-                </Route>
+                <Route path="/register" component={Auth(Register)} />
+                <Route path="/login" component={Auth(Login)} />
+                <Route path="/" component={Auth(Home)} />
             </Switch>
         </Router>
     </Provider>,
