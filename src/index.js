@@ -7,7 +7,7 @@ import store from './store';
 import Auth from './HOC/Auth';
 
 import Register from './containers/Register';
-import Login from './containers/Login';
+import Signin from './containers/Signin';
 import Home from './containers/Home';
 import './index.scss';
 
@@ -18,7 +18,7 @@ ReactDOM.render(
         <Router>
             <Switch>
                 <Route path="/register" component={Auth(Register)} />
-                <Route path="/login" component={Auth(Login)} />
+                <Route path="/signin" component={Auth(Signin)} />
                 <Route path="/" component={Auth(Home)} />
             </Switch>
         </Router>

@@ -12,7 +12,7 @@ const INITIAL_STATE = {
     error: null,
 };
 
-class Login extends Component {
+class Signin extends Component {
     constructor(props) {
         super(props);
 
@@ -36,7 +36,7 @@ class Login extends Component {
         this.setState({ ...INITIAL_STATE });
 
         try {
-            // TODO: login user
+            // TODO: Signin user
             const authUser = await auth.signInWithEmailAndPassword(email, password);
 
             this.setState({ ...INITIAL_STATE });
@@ -45,7 +45,7 @@ class Login extends Component {
 
             this.props.updateAuthState(authUser.user);
 
-            // Redirect to login page
+            // Redirect to Signin page
             this.props.history.push('/dashboard');
         } catch (error) {
             this.setState({ error });
@@ -64,14 +64,14 @@ class Login extends Component {
                 <form onSubmit={this.onSubmit}>
                     <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />
                     <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} />
-                    <input type="submit" value="Login" />
+                    <input type="submit" value="Signin" />
                 </form>
             </React.Fragment>
         );
     }
 }
 
-Login.propTypes = {
+Signin.propTypes = {
     updateAuthState: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
 };
@@ -80,4 +80,4 @@ const mapStateToProps = state => ({
     authentication: state.authentication,
 });
 
-export default connect(mapStateToProps, { updateAuthState })(Login);
+export default connect(mapStateToProps, { updateAuthState })(Signin);
