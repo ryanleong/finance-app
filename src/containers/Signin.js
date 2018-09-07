@@ -36,16 +36,12 @@ class Signin extends Component {
         this.setState({ ...INITIAL_STATE });
 
         try {
-            // TODO: Signin user
+            // Signin user
             const authUser = await auth.signInWithEmailAndPassword(email, password);
-
-            this.setState({ ...INITIAL_STATE });
 
             // TODO: Display registered notification
 
             this.props.updateAuthState(authUser.user);
-
-            // Redirect to Signin page
             this.props.history.push('/dashboard');
         } catch (error) {
             this.setState({ error });

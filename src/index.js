@@ -8,6 +8,7 @@ import Auth from './HOC/Auth';
 
 import Register from './containers/Register';
 import Signin from './containers/Signin';
+import Signout from './containers/Signout';
 import Home from './containers/Home';
 import './index.scss';
 
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Switch>
                 <Route path="/register" component={Auth(Register)} />
                 <Route path="/signin" component={Auth(Signin)} />
+                <Route path="/signout" component={Auth(Signout)} />
                 <Route path="/" component={Auth(Home)} />
             </Switch>
         </Router>
