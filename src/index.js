@@ -14,6 +14,7 @@ import Dashboard from './containers/Dashboard';
 import Transactions from './containers/transactions/Transactions';
 import TransactionsAdd from './containers/transactions/TransactionsAdd';
 import TransactionsEdit from './containers/transactions/TransactionsEdit';
+import CategoryAdd from './containers/categories/CategoryAdd';
 import './index.scss';
 
 import registerServiceWorker from './registerServiceWorker';
@@ -31,6 +32,10 @@ ReactDOM.render(
                 <Route path="/transactions/add" component={Auth(TransactionsAdd)} />
                 <Route path="/transactions/edit" component={Auth(TransactionsEdit)} />
                 <Route path="/transactions" component={Auth(Transactions)} />
+
+                <Route path="/categories/add" component={Auth(CategoryAdd)} />
+                {/* <Route path="/categories/edit" component={Auth(TransactionsEdit)} /> */}
+                {/* <Route path="/categories" component={Auth(Transactions)} /> */}
 
                 <Route path="/" component={Auth(Home)} />
             </Switch>

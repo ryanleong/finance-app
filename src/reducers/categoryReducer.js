@@ -1,11 +1,11 @@
-import { FETCH_CATEGORIES } from '../actions/types';
+import { ADD_CATEGORY } from '../actions/types';
 
 const initialState = {};
 
 export default function (state = initialState, action) {
     switch (action.type) {
-    case FETCH_CATEGORIES:
-        return { ...state, [action.payload.id]: action.payload };
+    case ADD_CATEGORY:
+        return { ...state, [action.payload.name]: action.payload.description };
 
     default:
         return state;

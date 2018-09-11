@@ -17,6 +17,12 @@ const ifSignedIn = (signedIn) => {
                         <li><Link to="/transactions/transfer">Transfer</Link></li>
                     </ul>
                 </li>
+                <li>
+                    <Link to="/categories">Categories</Link>
+                    <ul>
+                        <li><Link to="/categories/add">Add Category</Link></li>
+                    </ul>
+                </li>
                 <li><Link to="/signout">Signout</Link></li>
             </React.Fragment>
         );
