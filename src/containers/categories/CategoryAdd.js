@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 
 import { db } from '../../firebase';
 import Navigation from '../Navigation';
-import addCategory from '../../actions/categoryActions';
+import { addCategory } from '../../actions/categoryActions';
 
 const INITIAL_STATE = {
     name: '',
-    description: '',
 };
 
 
@@ -28,9 +27,7 @@ class CategoryAdd extends Component {
         evt.preventDefault();
 
         db.collection('users').doc(this.props.authentication.uid).collection('categories').doc(this.state.name)
-            .set({
-                description: this.state.description,
-            })
+            .set({})
             .then(() => {
                 this.props.addCategory(this.state);
 
@@ -52,8 +49,6 @@ class CategoryAdd extends Component {
 
                 <form onSubmit={this.onSubmit}>
                     <input type="text" name="name" placeholder="Category Name" value={this.state.name} onChange={this.onChange} />
-
-                    <textarea name="description" value={this.state.description} onChange={this.onChange} />
                     <input type="submit" value="Submit" />
                 </form>
             </React.Fragment>

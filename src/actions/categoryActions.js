@@ -1,10 +1,15 @@
-import { ADD_CATEGORY } from './types';
+import { ADD_CATEGORY, FETCH_CATEGORIES } from './types';
 
-const addCategory = data => (dispatch) => {
+export const addCategory = data => (dispatch) => {
     dispatch({
         type: ADD_CATEGORY,
         payload: data,
     });
 };
 
-export default addCategory;
+export const fetchCategory = categoryList => (dispatch) => {
+    dispatch({
+        type: FETCH_CATEGORIES,
+        payload: categoryList,
+    });
+};
