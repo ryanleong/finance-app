@@ -7,6 +7,14 @@ import _ from 'lodash';
 import Navigation from '../Navigation';
 import { fetchCategory } from '../../actions/categoryActions';
 
+const renderCatgories = (categories) => {
+    if (!_.isEmpty(categories)) {
+        return _.map(categories, (category, key) => <li key={key}>{key}</li>);
+    }
+
+    return null;
+};
+
 const Category = (props) => {
     if (props.authentication.uid !== undefined && _.isEmpty(props.categories)) {
         props.fetchCategory(props.authentication.uid);
@@ -16,6 +24,9 @@ const Category = (props) => {
         <React.Fragment>
             <Navigation />
             <h1>Category</h1>
+            <ul>
+                {renderCatgories(props.categories)}
+            </ul>
         </React.Fragment>
     );
 };
