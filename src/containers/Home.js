@@ -1,17 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Home extends Component {
-    componentDidMount() {
+import Navigation from './Navigation';
 
-    }
+const Home = () => (
+    <div>
+        <Navigation />
+        <h1>Home</h1>
+    </div>
+);
 
-    render() {
-        return (
-            <div>
-                <h1>Home</h1>
-            </div>
-        );
-    }
-}
 
 export default Home;

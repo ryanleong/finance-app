@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { db } from '../../firebase';
 
 import Navigation from '../Navigation';
-import addTransaction from '../../actions/transactionActions';
+import { addTransaction } from '../../actions/transactionActions';
 
 const INITIAL_STATE = {
     name: '',
