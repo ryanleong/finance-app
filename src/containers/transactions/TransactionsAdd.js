@@ -8,6 +8,7 @@ import { db } from '../../firebase';
 import Navigation from '../Navigation';
 import { addTransaction } from '../../actions/transactionActions';
 import { fetchCategory } from '../../actions/categoryActions';
+import { fetchAccounts } from '../../actions/accountActions';
 
 const INITIAL_STATE = {
     name: '',
@@ -28,7 +29,7 @@ class TransactionsAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.getCategories = this.getCategories.bind(this);
+        this.getCategoriesAndAccounts = this.getCategoriesAndAccounts.bind(this);
     }
 
     onSubmit(evt) {
@@ -57,15 +58,20 @@ class TransactionsAdd extends Component {
         });
     }
 
-    getCategories() {
+    getCategoriesAndAccounts() {
         // Query for categories if there are none in state
         if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.categories)) {
             this.props.fetchCategory(this.props.authentication.uid);
         }
+
+        // Query for accounts if there are none in state
+        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.accounts)) {
+            this.props.fetchAccounts(this.props.authentication.uid);
+        }
     }
 
     render() {
-        this.getCategories();
+        this.getCategoriesAndAccounts();
 
         return (
             <div>
@@ -82,8 +88,7 @@ class TransactionsAdd extends Component {
                     </select>
 
                     <select name="account" value={this.state.account} onChange={this.onChange}>
-                        <option value="savings">Savings</option>
-                        <option value="current">Current</option>
+                        {_.map(this.props.accounts, (category, key) => <option key={key} value={key}>{key}</option>)}
                     </select>
 
                     <input type="date" name="date" value={this.state.date} onChange={this.onChange} />
@@ -100,13 +105,16 @@ class TransactionsAdd extends Component {
 TransactionsAdd.propTypes = {
     addTransaction: PropTypes.func.isRequired,
     fetchCategory: PropTypes.func.isRequired,
+    fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
+    accounts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     authentication: state.authentication,
     categories: state.categories,
+    accounts: state.accounts,
 });
 
-export default connect(mapStateToProps, { addTransaction, fetchCategory })(TransactionsAdd);
+export default connect(mapStateToProps, { addTransaction, fetchAccounts, fetchCategory })(TransactionsAdd);
