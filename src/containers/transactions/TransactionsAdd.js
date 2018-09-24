@@ -7,6 +7,7 @@ import { db } from '../../firebase';
 
 import Navigation from '../Navigation';
 import { addTransaction } from '../../actions/transactionActions';
+import { fetchCategory } from '../../actions/categoryActions';
 
 const INITIAL_STATE = {
     name: '',
@@ -27,6 +28,7 @@ class TransactionsAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.getCategories = this.getCategories.bind(this);
     }
 
     onSubmit(evt) {
@@ -55,7 +57,16 @@ class TransactionsAdd extends Component {
         });
     }
 
+    getCategories() {
+        // Query for categories if there are none in state
+        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.categories)) {
+            this.props.fetchCategory(this.props.authentication.uid);
+        }
+    }
+
     render() {
+        this.getCategories();
+
         return (
             <div>
                 <Navigation />
@@ -67,11 +78,10 @@ class TransactionsAdd extends Component {
 
                     <select name="category" value={this.state.category} onChange={this.onChange}>
                         <option value="-1">No Category</option>
-                        <option value="food">Food</option>
+                        {_.map(this.props.categories, (category, key) => <option key={key} value={key}>{key}</option>)}
                     </select>
 
                     <select name="account" value={this.state.account} onChange={this.onChange}>
-                        <option disabled value="-1">Select an account</option>
                         <option value="savings">Savings</option>
                         <option value="current">Current</option>
                     </select>
@@ -89,11 +99,14 @@ class TransactionsAdd extends Component {
 
 TransactionsAdd.propTypes = {
     addTransaction: PropTypes.func.isRequired,
+    fetchCategory: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
+    categories: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     authentication: state.authentication,
+    categories: state.categories,
 });
 
-export default connect(mapStateToProps, { addTransaction })(TransactionsAdd);
+export default connect(mapStateToProps, { addTransaction, fetchCategory })(TransactionsAdd);
