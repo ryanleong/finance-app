@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Navigation from '../Navigation';
-import { fetchCategory } from '../../actions/categoryActions';
+import { fetchAccounts } from '../../actions/accountActions';
 
-const renderCatgories = (categories) => {
+const renderAccounts = (categories) => {
     if (!_.isEmpty(categories)) {
         return _.map(categories, (category, key) => <li key={key}>{key}</li>);
     }
@@ -14,31 +14,30 @@ const renderCatgories = (categories) => {
     return null;
 };
 
-const Category = (props) => {
-    if (props.authentication.uid !== undefined && _.isEmpty(props.categories)) {
-        props.fetchCategory(props.authentication.uid);
+const Accounts = (props) => {
+    if (props.authentication.uid !== undefined && _.isEmpty(props.accounts)) {
+        props.fetchAccounts(props.authentication.uid);
     }
-
     return (
         <React.Fragment>
             <Navigation />
-            <h1>Category</h1>
+            <h1>Accounts</h1>
             <ul>
-                {renderCatgories(props.categories)}
+                {renderAccounts(props.accounts)}
             </ul>
         </React.Fragment>
     );
 };
 
-Category.propTypes = {
-    fetchCategory: PropTypes.func.isRequired,
+Accounts.propTypes = {
+    fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
-    categories: PropTypes.object.isRequired,
+    accounts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     authentication: state.authentication,
-    categories: state.categories,
+    accounts: state.accounts,
 });
 
-export default connect(mapStateToProps, { fetchCategory })(Category);
+export default connect(mapStateToProps, { fetchAccounts })(Accounts);
