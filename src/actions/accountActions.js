@@ -1,10 +1,18 @@
-import { ADD_ACCOUNTS, FETCH_ACCOUNTS } from './types';
+import { ADD_ACCOUNTS, EDIT_ACCOUNTS, FETCH_ACCOUNTS } from './types';
 
 import { db } from '../firebase';
 
 export const addAccounts = (data, id) => (dispatch) => {
     dispatch({
         type: ADD_ACCOUNTS,
+        id,
+        payload: data,
+    });
+};
+
+export const editAccounts = (data, id) => (dispatch) => {
+    dispatch({
+        type: EDIT_ACCOUNTS,
         id,
         payload: data,
     });

@@ -5,9 +5,9 @@ import _ from 'lodash';
 
 import { db } from '../../firebase';
 import Navigation from '../Navigation';
-import { fetchCategory, editCategory } from '../../actions/categoryActions';
+import { fetchAccounts, editAccounts } from '../../actions/accountActions';
 
-class CategoryEdit extends Component {
+class AccountsEdit extends Component {
     constructor(props) {
         super(props);
 
@@ -17,7 +17,7 @@ class CategoryEdit extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.getCategories = this.getCategories.bind(this);
+        this.getAccounts = this.getAccounts.bind(this);
     }
 
     onChange(evt) {
@@ -29,30 +29,30 @@ class CategoryEdit extends Component {
     onSubmit(evt) {
         evt.preventDefault();
 
-        db.collection('users').doc(this.props.authentication.uid).collection('categories').doc(this.props.match.params.id)
+        db.collection('users').doc(this.props.authentication.uid).collection('accounts').doc(this.props.match.params.id)
             .update({
                 name: this.state.name,
             })
             .then(() => {
-                this.props.editCategory(this.state, this.props.match.params.id);
+                this.props.editAccounts(this.state, this.props.match.params.id);
 
-                this.props.history.push('/categories');
+                this.props.history.push('/accounts');
             });
     }
 
-    getCategories() {
-        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.categories)) {
-            this.props.fetchCategory(this.props.authentication.uid);
+    getAccounts() {
+        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.accounts)) {
+            this.props.fetchAccounts(this.props.authentication.uid);
         }
     }
 
     render() {
-        this.getCategories();
+        this.getAccounts();
 
-        if (!_.isEmpty(this.props.categories) && this.state.name === '') {
+        if (!_.isEmpty(this.props.accounts) && this.state.name === '') {
             setTimeout(() => {
                 this.setState({
-                    name: this.props.categories[this.props.match.params.id].name,
+                    name: this.props.accounts[this.props.match.params.id].name,
                 });
             }, 100);
         }
@@ -61,10 +61,10 @@ class CategoryEdit extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Edit Category</h1>
+                <h1>Edit Account</h1>
 
                 <form onSubmit={this.onSubmit}>
-                    <input type="text" name="name" placeholder="Category Name" value={this.state.name} onChange={this.onChange} />
+                    <input type="text" name="name" placeholder="Account Name" value={this.state.name} onChange={this.onChange} />
                     <input type="submit" value="Update" />
                 </form>
             </React.Fragment>
@@ -72,17 +72,17 @@ class CategoryEdit extends Component {
     }
 }
 
-CategoryEdit.propTypes = {
-    fetchCategory: PropTypes.func.isRequired,
-    editCategory: PropTypes.func.isRequired,
+AccountsEdit.propTypes = {
+    fetchAccounts: PropTypes.func.isRequired,
+    editAccounts: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     authentication: PropTypes.object.isRequired,
-    categories: PropTypes.object.isRequired,
+    accounts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     authentication: state.authentication,
-    categories: state.categories,
+    accounts: state.accounts,
 });
 
-export default connect(mapStateToProps, { fetchCategory, editCategory })(CategoryEdit);
+export default connect(mapStateToProps, { fetchAccounts, editAccounts })(AccountsEdit);

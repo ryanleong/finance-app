@@ -18,6 +18,7 @@ import CategoryAdd from './containers/categories/CategoryAdd';
 import CategoryEdit from './containers/categories/CategoryEdit';
 import Category from './containers/categories/Category';
 import AccountsAdd from './containers/accounts/AccountsAdd';
+import AccountsEdit from './containers/accounts/AccountsEdit';
 import Accounts from './containers/accounts/Accounts';
 import './index.scss';
 
@@ -41,6 +42,7 @@ ReactDOM.render(
                 <Route path="/categories/add" component={Auth(CategoryAdd)} />
                 <Route path="/categories" component={Auth(Category)} />
 
+                <Route path="/accounts/edit/:id" component={Auth(AccountsEdit)} />
                 <Route path="/accounts/add" component={Auth(AccountsAdd)} />
                 <Route path="/accounts" component={Auth(Accounts)} />
 
