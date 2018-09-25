@@ -35,7 +35,7 @@ ReactDOM.render(
                 <Route path="/dashboard" component={Auth(Dashboard)} />
 
                 <Route path="/transactions/add" component={Auth(TransactionsAdd)} />
-                <Route path="/transactions/edit" component={Auth(TransactionsEdit)} />
+                <Route path="/transactions/edit/:id" component={Auth(TransactionsEdit)} />
                 <Route path="/transactions" component={Auth(Transactions)} />
 
                 <Route path="/categories/edit/:id" component={Auth(CategoryEdit)} />

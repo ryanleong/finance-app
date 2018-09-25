@@ -13,7 +13,6 @@ const ifSignedIn = (signedIn) => {
                     <Link to="/transactions">Transactions</Link>
                     <ul>
                         <li><Link to="/transactions/add">Add Transaction</Link></li>
-                        <li><Link to="/transactions/edit">Edit Transaction</Link></li>
                         <li><Link to="/transactions/transfer">Transfer</Link></li>
                     </ul>
                 </li>

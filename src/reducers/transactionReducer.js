@@ -1,26 +1,28 @@
-import _ from 'lodash';
 import { ADD_TRANSACTIONS, FETCH_TRANSACTIONS } from '../actions/types';
 
 const initialState = {
     requireUpdate: true,
-    transactions: {},
+    transactionData: {},
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
     case ADD_TRANSACTIONS:
-        return _.merge(state, {
+        return {
             requireUpdate: false,
-            transactions: {
+            transactionData: {
+                ...state.transactionData,
                 [action.payload.id]: action.payload.data,
             },
-        });
+        };
 
     case FETCH_TRANSACTIONS:
-        return _.merge(state, {
+        return {
             requireUpdate: false,
-            transactions: action.payload,
-        });
+            transactionData: {
+                ...action.payload,
+            },
+        };
 
     default:
         return state;
