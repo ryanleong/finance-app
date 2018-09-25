@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -8,7 +9,13 @@ import { fetchAccounts } from '../../actions/accountActions';
 
 const renderAccounts = (categories) => {
     if (!_.isEmpty(categories)) {
-        return _.map(categories, (category, key) => <li key={key}>{key}</li>);
+        return _.map(categories, (category, key) => (
+            <li key={key}>
+                {category.name}
+                {' '}
+                <Link to="/accounts/edit">Edit</Link>
+            </li>
+        ));
     }
 
     return null;

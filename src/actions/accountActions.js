@@ -2,9 +2,10 @@ import { ADD_ACCOUNTS, FETCH_ACCOUNTS } from './types';
 
 import { db } from '../firebase';
 
-export const addAccounts = data => (dispatch) => {
+export const addAccounts = (data, id) => (dispatch) => {
     dispatch({
         type: ADD_ACCOUNTS,
+        id,
         payload: data,
     });
 };
@@ -17,7 +18,7 @@ export const fetchAccounts = uid => (dispatch) => {
             results.docs.forEach((doc) => {
                 categoryList = {
                     ...categoryList,
-                    [doc.id]: '',
+                    [doc.id]: doc.data(),
                 };
             });
 

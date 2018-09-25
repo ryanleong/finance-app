@@ -29,10 +29,12 @@ class AccountsAdd extends Component {
     onSubmit(evt) {
         evt.preventDefault();
 
-        db.collection('users').doc(this.props.authentication.uid).collection('accounts').doc(this.state.name)
-            .set({})
-            .then(() => {
-                this.props.addAccounts(this.state);
+        db.collection('users').doc(this.props.authentication.uid).collection('accounts')
+            .add({
+                name: this.state.name,
+            })
+            .then((docRef) => {
+                this.props.addAccounts(this.state, docRef.id);
 
                 this.props.history.push('/accounts');
             });

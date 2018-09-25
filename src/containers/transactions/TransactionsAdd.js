@@ -84,11 +84,12 @@ class TransactionsAdd extends Component {
 
                     <select name="category" value={this.state.category} onChange={this.onChange}>
                         <option value="-1">No Category</option>
-                        {_.map(this.props.categories, (category, key) => <option key={key} value={key}>{key}</option>)}
+                        {_.map(this.props.categories, (category, key) => <option key={key} value={key}>{category.name}</option>)}
                     </select>
 
                     <select name="account" value={this.state.account} onChange={this.onChange}>
-                        {_.map(this.props.accounts, (category, key) => <option key={key} value={key}>{key}</option>)}
+                        <option value="-1">No Account</option>
+                        {_.map(this.props.accounts, (account, key) => <option key={key} value={key}>{account.name}</option>)}
                     </select>
 
                     <input type="date" name="date" value={this.state.date} onChange={this.onChange} />

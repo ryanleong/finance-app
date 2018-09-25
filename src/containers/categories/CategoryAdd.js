@@ -26,10 +26,12 @@ class CategoryAdd extends Component {
     onSubmit(evt) {
         evt.preventDefault();
 
-        db.collection('users').doc(this.props.authentication.uid).collection('categories').doc(this.state.name)
-            .set({})
-            .then(() => {
-                this.props.addCategory(this.state);
+        db.collection('users').doc(this.props.authentication.uid).collection('categories')
+            .add({
+                name: this.state.name,
+            })
+            .then((docRef) => {
+                this.props.addCategory(this.state, docRef.id);
 
                 this.props.history.push('/categories');
             });

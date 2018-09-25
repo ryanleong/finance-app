@@ -17,7 +17,6 @@ export const fetchTransactions = uid => (dispatch) => {
         .get()
         .then((docSnapshots) => {
             const transactions = {};
-            console.log('did call');
 
             docSnapshots.docs.forEach((doc) => {
                 transactions[doc.id] = doc.data();
