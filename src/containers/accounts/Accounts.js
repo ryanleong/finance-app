@@ -25,6 +25,7 @@ const Accounts = (props) => {
     if (props.authentication.uid !== undefined && _.isEmpty(props.accounts)) {
         props.fetchAccounts(props.authentication.uid);
     }
+
     return (
         <React.Fragment>
             <Navigation />
