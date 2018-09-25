@@ -13,7 +13,7 @@ const renderAccounts = (categories) => {
             <li key={key}>
                 {category.name}
                 {' '}
-                <Link to="/accounts/edit">Edit</Link>
+                <Link to={`/accounts/edit/${key}`}>Edit</Link>
             </li>
         ));
     }

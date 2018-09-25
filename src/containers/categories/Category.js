@@ -13,7 +13,7 @@ const renderCatgories = (categories) => {
             <li key={key}>
                 {category.name}
                 {' '}
-                <Link to="/categories/edit">Edit</Link>
+                <Link to={`/categories/edit/${key}`}>Edit</Link>
             </li>
         ));
     }

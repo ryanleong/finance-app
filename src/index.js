@@ -15,6 +15,7 @@ import Transactions from './containers/transactions/Transactions';
 import TransactionsAdd from './containers/transactions/TransactionsAdd';
 import TransactionsEdit from './containers/transactions/TransactionsEdit';
 import CategoryAdd from './containers/categories/CategoryAdd';
+import CategoryEdit from './containers/categories/CategoryEdit';
 import Category from './containers/categories/Category';
 import AccountsAdd from './containers/accounts/AccountsAdd';
 import Accounts from './containers/accounts/Accounts';
@@ -36,6 +37,7 @@ ReactDOM.render(
                 <Route path="/transactions/edit" component={Auth(TransactionsEdit)} />
                 <Route path="/transactions" component={Auth(Transactions)} />
 
+                <Route path="/categories/edit/:id" component={Auth(CategoryEdit)} />
                 <Route path="/categories/add" component={Auth(CategoryAdd)} />
                 <Route path="/categories" component={Auth(Category)} />
 

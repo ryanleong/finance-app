@@ -1,10 +1,18 @@
-import { ADD_CATEGORY, FETCH_CATEGORIES } from './types';
+import { ADD_CATEGORY, EDIT_CATEGORY, FETCH_CATEGORIES } from './types';
 
 import { db } from '../firebase';
 
 export const addCategory = (data, id) => (dispatch) => {
     dispatch({
         type: ADD_CATEGORY,
+        id,
+        payload: data,
+    });
+};
+
+export const editCategory = (data, id) => (dispatch) => {
+    dispatch({
+        type: EDIT_CATEGORY,
         id,
         payload: data,
     });
