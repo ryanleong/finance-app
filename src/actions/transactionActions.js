@@ -10,6 +10,8 @@ export const addTransaction = data => (dispatch) => {
 };
 
 export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
+    const perPage = parseInt(process.env.REACT_APP_TRANSACTIONS_PER_PAGE, 10);
+
     const execute = (docSnapshots) => {
         dispatch({
             type: FETCH_TRANSACTIONS,
@@ -21,9 +23,9 @@ export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
         .orderBy('date', 'desc');
 
     if (latestTransaction !== null) {
-        query.startAfter(latestTransaction).limit(5).get().then(execute);
+        query.startAfter(latestTransaction).limit(perPage).get().then(execute);
     } else {
-        query.limit(5).get().then(execute);
+        query.limit(perPage).get().then(execute);
     }
 };
 
@@ -34,7 +36,7 @@ export const fetchTransactionPages = uid => (dispatch) => {
         .then((docSnapshots) => {
             dispatch({
                 type: FETCH_TRANSACTIONS_PAGES,
-                payload: Math.ceil(docSnapshots.data().transactionCount / 5),
+                payload: Math.ceil(docSnapshots.data().transactionCount / process.env.REACT_APP_TRANSACTIONS_PER_PAGE),
             });
         });
 };

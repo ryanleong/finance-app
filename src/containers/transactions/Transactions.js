@@ -16,6 +16,8 @@ class Transactions extends Component {
             page: 0,
         };
 
+        this.perPage = process.env.REACT_APP_TRANSACTIONS_PER_PAGE;
+
         this.renderTransactions = this.renderTransactions.bind(this);
         this.doPaginate = this.doPaginate.bind(this);
         this.queryForRequiredData = this.queryForRequiredData.bind(this);
@@ -51,7 +53,7 @@ class Transactions extends Component {
             });
 
             // Do request for more transactions (if any)
-            const numOfPagesForStoredTransactions = Math.ceil(this.props.transactions.transactionData.length / 5);
+            const numOfPagesForStoredTransactions = Math.ceil(this.props.transactions.transactionData.length / this.perPage);
             if (numOfPagesForStoredTransactions < totalPages) {
                 // Trigger query for more transactions
                 this.props.fetchTransactions(this.props.authentication.uid, this.props.transactions.transactionData[this.props.transactions.transactionData.length - 1]);
@@ -60,36 +62,39 @@ class Transactions extends Component {
     }
 
     renderTransactions() {
-        const startIndex = this.state.page * 5;
-        const endIndex = startIndex + 5;
-        let counter = 0;
+        if (this.props.transactions.transactionData.length > 0) {
+            const returnJSX = [];
+            const startIndex = this.state.page * this.perPage;
 
-        return _.map(this.props.transactions.transactionData, (transaction, key) => {
-            if (counter >= startIndex && counter < endIndex) {
-                const trans = transaction.data();
+            // Set endIndex to length of transaction or next set. whichever is samller
+            let endIndex = (startIndex + this.perPage);
+            endIndex = endIndex > this.props.transactions.transactionData.length ? this.props.transactions.transactionData.length : endIndex;
+
+
+            for (let i = startIndex; i < endIndex; i += 1) {
+                const transaction = this.props.transactions.transactionData[i].data();
 
                 // Display proper string from ID
-                const category = this.props.categories[trans.category] !== undefined ? this.props.categories[trans.category].name : '';
+                const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
 
-                const account = this.props.accounts[trans.account] !== undefined ? this.props.accounts[trans.account].name : '';
+                const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
 
-                counter += 1;
-
-                return (
-                    <tr key={key}>
-                        <td>{trans.date}</td>
-                        <td>{trans.name}</td>
-                        <td>{trans.amount}</td>
+                returnJSX.push(
+                    <tr key={`transaction-${i}`}>
+                        <td>{transaction.date}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.amount}</td>
                         <td>{account}</td>
                         <td>{category}</td>
-                        <td>{trans.description}</td>
-                    </tr>
+                        <td>{transaction.description}</td>
+                    </tr>,
                 );
             }
 
-            counter += 1;
-            return null;
-        });
+            return returnJSX;
+        }
+
+        return null;
     }
 
     render() {
