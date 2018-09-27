@@ -1,5 +1,5 @@
 import {
-    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_PAGES, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_PAGES, END_FETCHING_TRANSACTIONS_PAGES,
+    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_COUNT, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_COUNT, END_FETCHING_TRANSACTIONS_COUNT,
 } from './types';
 
 import store from '../store';
@@ -48,24 +48,24 @@ export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
     }
 };
 
-export const fetchTransactionPages = uid => (dispatch) => {
+export const fetchTransactionCount = uid => (dispatch) => {
     const state = store.getState();
 
-    if (!state.transactions.isFetchingTransactionsPages) {
+    if (!state.transactions.isFetchingTransactionsCount) {
         // Mark as fetching
-        dispatch({ type: START_FETCHING_TRANSACTIONS_PAGES });
+        dispatch({ type: START_FETCHING_TRANSACTIONS_COUNT });
 
         // Get total number of transactions
         db.collection('users').doc(uid)
             .get()
             .then((docSnapshots) => {
                 dispatch({
-                    type: FETCH_TRANSACTIONS_PAGES,
+                    type: FETCH_TRANSACTIONS_COUNT,
                     payload: docSnapshots.data().transactionCount,
                 });
 
                 // Mark fetching as done
-                dispatch({ type: END_FETCHING_TRANSACTIONS_PAGES });
+                dispatch({ type: END_FETCHING_TRANSACTIONS_COUNT });
             });
     }
 };

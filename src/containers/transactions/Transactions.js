@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Navigation from '../Navigation';
-import { fetchTransactions, fetchTransactionPages } from '../../actions/transactionActions';
+import { fetchTransactions, fetchTransactionCount } from '../../actions/transactionActions';
 import { fetchCategory } from '../../actions/categoryActions';
 import { fetchAccounts } from '../../actions/accountActions';
 
@@ -33,7 +33,7 @@ class Transactions extends Component {
                 props.fetchTransactions(props.authentication.uid, null);
 
                 // Get number of pages
-                props.fetchTransactionPages(props.authentication.uid);
+                props.fetchTransactionCount(props.authentication.uid);
             }
 
             // Fetch Categories
@@ -163,7 +163,7 @@ class Transactions extends Component {
 
 Transactions.propTypes = {
     fetchTransactions: PropTypes.func.isRequired,
-    // fetchTransactionPages: PropTypes.func.isRequired,
+    // fetchTransactionCount: PropTypes.func.isRequired,
     // fetchCategory: PropTypes.func.isRequired,
     // fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
@@ -180,5 +180,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    fetchTransactions, fetchTransactionPages, fetchCategory, fetchAccounts,
+    fetchTransactions, fetchTransactionCount, fetchCategory, fetchAccounts,
 })(Transactions);

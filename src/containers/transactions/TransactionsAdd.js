@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { db } from '../../firebase';
 
 import Navigation from '../Navigation';
-import { addTransaction, fetchTransactionPages } from '../../actions/transactionActions';
+import { addTransaction, fetchTransactionCount } from '../../actions/transactionActions';
 import { fetchCategory } from '../../actions/categoryActions';
 import { fetchAccounts } from '../../actions/accountActions';
 
@@ -35,7 +35,7 @@ class TransactionsAdd extends Component {
         setTimeout(() => {
             if (this.props.authentication.uid !== undefined) {
                 if (this.props.transactions.transactionCount === -1 && prevProps.transactions.transactionCount === -1) {
-                    this.props.fetchTransactionPages(this.props.authentication.uid);
+                    this.props.fetchTransactionCount(this.props.authentication.uid);
                 }
                 if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
                     this.props.fetchCategory(this.props.authentication.uid);
@@ -105,7 +105,7 @@ class TransactionsAdd extends Component {
 
 TransactionsAdd.propTypes = {
     addTransaction: PropTypes.func.isRequired,
-    fetchTransactionPages: PropTypes.func.isRequired,
+    fetchTransactionCount: PropTypes.func.isRequired,
     fetchCategory: PropTypes.func.isRequired,
     fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
@@ -122,5 +122,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    addTransaction, fetchTransactionPages, fetchAccounts, fetchCategory,
+    addTransaction, fetchTransactionCount, fetchAccounts, fetchCategory,
 })(TransactionsAdd);

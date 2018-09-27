@@ -1,5 +1,5 @@
 import {
-    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_PAGES, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_PAGES, END_FETCHING_TRANSACTIONS_PAGES,
+    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_COUNT, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_COUNT, END_FETCHING_TRANSACTIONS_COUNT,
 } from '../actions/types';
 
 const initialState = {
@@ -7,7 +7,7 @@ const initialState = {
     transactionCount: -1,
     transactionTotalPages: -1,
     isFetchingTransactions: false,
-    isFetchingTransactionsPages: false,
+    isFetchingTransactionsCount: false,
     transactionData: [],
 };
 
@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
             transactionData: [...state.transactionData, ...action.payload],
         };
 
-    case FETCH_TRANSACTIONS_PAGES:
+    case FETCH_TRANSACTIONS_COUNT:
         return {
             ...state,
             requireUpdate: false,
@@ -37,11 +37,11 @@ export default function (state = initialState, action) {
     case END_FETCHING_TRANSACTIONS:
         return { ...state, isFetchingTransactions: false };
 
-    case START_FETCHING_TRANSACTIONS_PAGES:
-        return { ...state, isFetchingTransactionsPages: true };
+    case START_FETCHING_TRANSACTIONS_COUNT:
+        return { ...state, isFetchingTransactionsCount: true };
 
-    case END_FETCHING_TRANSACTIONS_PAGES:
-        return { ...state, isFetchingTransactionsPages: false };
+    case END_FETCHING_TRANSACTIONS_COUNT:
+        return { ...state, isFetchingTransactionsCount: false };
 
     default:
         return state;
