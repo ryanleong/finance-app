@@ -22,9 +22,11 @@ const renderAccounts = (categories) => {
 };
 
 const Accounts = (props) => {
-    if (props.authentication.uid !== undefined && _.isEmpty(props.accounts)) {
-        props.fetchAccounts(props.authentication.uid);
-    }
+    setTimeout(() => {
+        if (props.authentication.uid !== undefined && _.isEmpty(props.accounts)) {
+            props.fetchAccounts(props.authentication.uid);
+        }
+    }, 400);
 
     return (
         <React.Fragment>

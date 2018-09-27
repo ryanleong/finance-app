@@ -14,32 +14,36 @@ class Transactions extends Component {
 
         this.state = {
             page: 0,
+            isQueryingCategories: false,
         };
 
         this.perPage = process.env.REACT_APP_TRANSACTIONS_PER_PAGE;
 
         this.renderTransactions = this.renderTransactions.bind(this);
         this.doPaginate = this.doPaginate.bind(this);
-        this.queryForRequiredData = this.queryForRequiredData.bind(this);
     }
 
-    queryForRequiredData() {
+    componentDidUpdate(prevProps) {
         setTimeout(() => {
             if (this.props.authentication.uid !== undefined) {
-                if (this.props.transactions.requireUpdate) {
+                if (this.props.transactions.requireUpdate && prevProps.transactions.requireUpdate) {
                     this.props.fetchTransactions(this.props.authentication.uid, null);
+                    console.log('here4');
                 }
-                if (_.isEmpty(this.props.categories)) {
+                if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
                     this.props.fetchCategory(this.props.authentication.uid);
+                    console.log('here1');
                 }
-                if (_.isEmpty(this.props.accounts)) {
+                if (_.isEmpty(prevProps.accounts) && _.isEmpty(this.props.accounts)) {
                     this.props.fetchAccounts(this.props.authentication.uid);
+                    console.log('here2');
                 }
-                if (this.props.transactions.transactionTotalPages === -1) {
+                if (prevProps.transactions.transactionTotalPages === -1 && this.props.transactions.transactionTotalPages === -1) {
                     this.props.fetchTransactionPages(this.props.authentication.uid);
+                    console.log('here3');
                 }
             }
-        }, 300);
+        }, 400);
     }
 
     doPaginate(evt) {
@@ -98,8 +102,6 @@ class Transactions extends Component {
     }
 
     render() {
-        this.queryForRequiredData();
-
         return (
             <div>
                 <Navigation />

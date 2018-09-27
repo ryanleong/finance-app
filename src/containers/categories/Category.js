@@ -22,9 +22,11 @@ const renderCatgories = (categories) => {
 };
 
 const Category = (props) => {
-    if (props.authentication.uid !== undefined && _.isEmpty(props.categories)) {
-        props.fetchCategory(props.authentication.uid);
-    }
+    setTimeout(() => {
+        if (props.authentication.uid !== undefined && _.isEmpty(props.categories)) {
+            props.fetchCategory(props.authentication.uid);
+        }
+    }, 400);
 
     return (
         <React.Fragment>
