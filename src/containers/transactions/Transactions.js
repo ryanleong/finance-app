@@ -15,6 +15,8 @@ class Transactions extends Component {
         this.state = {
             page: 0,
             isFetchingMoreTransactions: false,
+            isFetchingCategories: false,
+            isFetchingAccounts: false,
         };
 
         this.perPage = process.env.REACT_APP_TRANSACTIONS_PER_PAGE;
@@ -23,21 +25,52 @@ class Transactions extends Component {
         this.doPaginate = this.doPaginate.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
-        setTimeout(() => {
-            if (this.props.authentication.uid !== undefined) {
-                if (this.props.transactions.requireUpdate) {
-                    this.props.fetchTransactions(this.props.authentication.uid, null);
-                    this.props.fetchTransactionPages(this.props.authentication.uid);
+    static getDerivedStateFromProps(props, state) {
+        let { isFetchingTransactions, isFetchingCategories, isFetchingAccounts } = state;
+
+        if (props.authentication.uid !== undefined) {
+            // Fetch Transactions and Count & pages
+            if (props.transactions.requireUpdate) {
+                if (!state.isFetchingTransactions) {
+                    isFetchingTransactions = true;
+                    props.fetchTransactions(props.authentication.uid, null);
+                    props.fetchTransactionPages(props.authentication.uid);
                 }
-                if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
-                    this.props.fetchCategory(this.props.authentication.uid);
-                }
-                if (_.isEmpty(prevProps.accounts) && _.isEmpty(this.props.accounts)) {
-                    this.props.fetchAccounts(this.props.authentication.uid);
-                }
+            } else {
+                isFetchingTransactions = false;
             }
 
+            // Fetch Categories
+            if (_.isEmpty(props.categories)) {
+                if (!state.isFetchingCategories) {
+                    isFetchingCategories = true;
+                    props.fetchCategory(props.authentication.uid);
+                }
+            } else {
+                isFetchingCategories = false;
+            }
+
+            // Fetch Accounts
+            if (_.isEmpty(props.accounts)) {
+                if (!state.isFetchingAccounts) {
+                    isFetchingAccounts = true;
+                    props.fetchAccounts(props.authentication.uid);
+                }
+            } else {
+                isFetchingAccounts = false;
+            }
+        }
+
+        return {
+            ...state,
+            isFetchingTransactions,
+            isFetchingCategories,
+            isFetchingAccounts,
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        setTimeout(() => {
             // Enable pagination when querying has completed
             if (prevProps.transactions.transactionData.length !== this.props.transactions.transactionData.length) {
                 this.setState({
@@ -77,40 +110,36 @@ class Transactions extends Component {
 
     renderTransactions() {
         if (this.props.transactions.transactionData.length > 0) {
-            try {
-                const returnJSX = [];
-                const startIndex = this.state.page * this.perPage;
+            const returnJSX = [];
+            const startIndex = this.state.page * this.perPage;
 
-                // Set endIndex to length of transaction or next set. whichever is samller
-                let endIndex = startIndex + parseInt(this.perPage, 10);
-                endIndex = endIndex > this.props.transactions.transactionData.length ? this.props.transactions.transactionData.length : endIndex;
+            // Set endIndex to length of transaction or next set. whichever is samller
+            let endIndex = startIndex + parseInt(this.perPage, 10);
+            endIndex = endIndex > this.props.transactions.transactionData.length ? this.props.transactions.transactionData.length : endIndex;
 
-                for (let i = startIndex; i < endIndex; i += 1) {
-                    if (this.props.transactions.transactionData[i] !== undefined) {
-                        const transaction = this.props.transactions.transactionData[i].data();
+            for (let i = startIndex; i < endIndex; i += 1) {
+                if (this.props.transactions.transactionData[i] !== undefined) {
+                    const transaction = this.props.transactions.transactionData[i].data();
 
-                        // Display proper string from ID
-                        const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
+                    // Display proper string from ID
+                    const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
 
-                        const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
+                    const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
 
-                        returnJSX.push(
-                            <tr key={`transaction-${i}`}>
-                                <td>{transaction.date}</td>
-                                <td>{transaction.name}</td>
-                                <td>{transaction.amount}</td>
-                                <td>{account}</td>
-                                <td>{category}</td>
-                                <td>{transaction.description}</td>
-                            </tr>,
-                        );
-                    }
+                    returnJSX.push(
+                        <tr key={`transaction-${i}`}>
+                            <td>{transaction.date}</td>
+                            <td>{transaction.name}</td>
+                            <td>{transaction.amount}</td>
+                            <td>{account}</td>
+                            <td>{category}</td>
+                            <td>{transaction.description}</td>
+                        </tr>,
+                    );
                 }
-
-                return returnJSX;
-            } catch (e) {
-                console.log('TCL: Transactions -> }catch -> e', e);
             }
+
+            return returnJSX;
         }
 
         return null;
@@ -125,6 +154,12 @@ class Transactions extends Component {
                 <div className="pagination">
                     <span onClick={this.doPaginate} id="prev">Previous</span>
                     <span onClick={this.doPaginate} id="next">Next</span>
+
+                    <h3>
+                        Page:
+                        {' '}
+                        {this.state.page + 1}
+                    </h3>
                 </div>
 
                 <table>
@@ -149,9 +184,9 @@ class Transactions extends Component {
 
 Transactions.propTypes = {
     fetchTransactions: PropTypes.func.isRequired,
-    fetchTransactionPages: PropTypes.func.isRequired,
-    fetchCategory: PropTypes.func.isRequired,
-    fetchAccounts: PropTypes.func.isRequired,
+    // fetchTransactionPages: PropTypes.func.isRequired,
+    // fetchCategory: PropTypes.func.isRequired,
+    // fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
     transactions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,

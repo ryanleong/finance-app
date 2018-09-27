@@ -34,7 +34,7 @@ class TransactionsAdd extends Component {
     componentDidUpdate(prevProps) {
         setTimeout(() => {
             if (this.props.authentication.uid !== undefined) {
-                if (this.props.transactions.requireUpdate && prevProps.transactions.requireUpdate) {
+                if (this.props.transactions.transactionCount === -1 && prevProps.transactions.transactionCount === -1) {
                     this.props.fetchTransactionPages(this.props.authentication.uid);
                 }
                 if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
@@ -60,7 +60,9 @@ class TransactionsAdd extends Component {
             .then((doc) => {
                 this.props.addTransaction(this.props.authentication.uid, this.props.transactions.transactionCount, doc);
 
-                this.props.history.push('/transactions');
+                setTimeout(() => {
+                    this.props.history.push('/transactions');
+                }, 100);
             });
     }
 
