@@ -14,6 +14,7 @@ class Transactions extends Component {
 
         this.state = {
             page: 0,
+            isFetchingMoreTransactions: false,
         };
 
         this.perPage = process.env.REACT_APP_TRANSACTIONS_PER_PAGE;
@@ -36,60 +37,80 @@ class Transactions extends Component {
                     this.props.fetchAccounts(this.props.authentication.uid);
                 }
             }
-        }, 400);
+
+            // Enable pagination when querying has completed
+            if (prevProps.transactions.transactionData.length !== this.props.transactions.transactionData.length) {
+                this.setState({
+                    isFetchingMoreTransactions: false,
+                });
+            }
+        }, 350);
     }
 
     doPaginate(evt) {
+        // Disable pagination when querying
+        if (this.state.isFetchingMoreTransactions) return;
+
         const { page } = this.state;
         const totalPages = this.props.transactions.transactionTotalPages;
         const newPage = evt.target.id === 'prev' ? page - 1 : page + 1;
 
         if (newPage >= 0 && newPage < totalPages) {
-            this.setState({
-                page: evt.target.id === 'prev' ? page - 1 : page + 1,
-            });
-
             // Do request for more transactions (if any)
             const numOfPagesForStoredTransactions = Math.ceil(this.props.transactions.transactionData.length / this.perPage);
 
             if (numOfPagesForStoredTransactions < totalPages) {
                 // Trigger query for more transactions
                 this.props.fetchTransactions(this.props.authentication.uid, this.props.transactions.transactionData[this.props.transactions.transactionData.length - 1]);
+
+                // Disable pagination when querying
+                this.setState({
+                    isFetchingMoreTransactions: true,
+                });
             }
+
+            this.setState({
+                page: newPage,
+            });
         }
     }
 
     renderTransactions() {
         if (this.props.transactions.transactionData.length > 0) {
-            const returnJSX = [];
-            const startIndex = this.state.page * this.perPage;
+            try {
+                const returnJSX = [];
+                const startIndex = this.state.page * this.perPage;
 
-            // Set endIndex to length of transaction or next set. whichever is samller
-            let endIndex = (startIndex + this.perPage);
-            endIndex = endIndex > this.props.transactions.transactionData.length ? this.props.transactions.transactionData.length : endIndex;
+                // Set endIndex to length of transaction or next set. whichever is samller
+                let endIndex = startIndex + parseInt(this.perPage, 10);
+                endIndex = endIndex > this.props.transactions.transactionData.length ? this.props.transactions.transactionData.length : endIndex;
 
+                for (let i = startIndex; i < endIndex; i += 1) {
+                    if (this.props.transactions.transactionData[i] !== undefined) {
+                        const transaction = this.props.transactions.transactionData[i].data();
 
-            for (let i = startIndex; i < endIndex; i += 1) {
-                const transaction = this.props.transactions.transactionData[i].data();
+                        // Display proper string from ID
+                        const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
 
-                // Display proper string from ID
-                const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
+                        const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
 
-                const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
+                        returnJSX.push(
+                            <tr key={`transaction-${i}`}>
+                                <td>{transaction.date}</td>
+                                <td>{transaction.name}</td>
+                                <td>{transaction.amount}</td>
+                                <td>{account}</td>
+                                <td>{category}</td>
+                                <td>{transaction.description}</td>
+                            </tr>,
+                        );
+                    }
+                }
 
-                returnJSX.push(
-                    <tr key={`transaction-${i}`}>
-                        <td>{transaction.date}</td>
-                        <td>{transaction.name}</td>
-                        <td>{transaction.amount}</td>
-                        <td>{account}</td>
-                        <td>{category}</td>
-                        <td>{transaction.description}</td>
-                    </tr>,
-                );
+                return returnJSX;
+            } catch (e) {
+                console.log('TCL: Transactions -> }catch -> e', e);
             }
-
-            return returnJSX;
         }
 
         return null;
