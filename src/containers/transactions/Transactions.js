@@ -14,7 +14,6 @@ class Transactions extends Component {
 
         this.state = {
             page: 0,
-            isFetchingMoreTransactions: false,
             isFetchingCategories: false,
             isFetchingAccounts: false,
         };
@@ -26,18 +25,15 @@ class Transactions extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        let { isFetchingTransactions, isFetchingCategories, isFetchingAccounts } = state;
+        let { isFetchingCategories, isFetchingAccounts } = state;
 
         if (props.authentication.uid !== undefined) {
-            // Fetch Transactions and Count & pages
             if (props.transactions.requireUpdate) {
-                if (!state.isFetchingTransactions) {
-                    isFetchingTransactions = true;
-                    props.fetchTransactions(props.authentication.uid, null);
-                    props.fetchTransactionPages(props.authentication.uid);
-                }
-            } else {
-                isFetchingTransactions = false;
+                // Fetch Transactions
+                props.fetchTransactions(props.authentication.uid, null);
+
+                // Get number of pages
+                props.fetchTransactionPages(props.authentication.uid);
             }
 
             // Fetch Categories
@@ -63,26 +59,14 @@ class Transactions extends Component {
 
         return {
             ...state,
-            isFetchingTransactions,
             isFetchingCategories,
             isFetchingAccounts,
         };
     }
 
-    componentDidUpdate(prevProps) {
-        setTimeout(() => {
-            // Enable pagination when querying has completed
-            if (prevProps.transactions.transactionData.length !== this.props.transactions.transactionData.length) {
-                this.setState({
-                    isFetchingMoreTransactions: false,
-                });
-            }
-        }, 350);
-    }
-
     doPaginate(evt) {
         // Disable pagination when querying
-        if (this.state.isFetchingMoreTransactions) return;
+        if (this.props.transactions.isFetchingTransactions) return;
 
         const { page } = this.state;
         const totalPages = this.props.transactions.transactionTotalPages;
@@ -92,14 +76,9 @@ class Transactions extends Component {
             // Do request for more transactions (if any)
             const numOfPagesForStoredTransactions = Math.ceil(this.props.transactions.transactionData.length / this.perPage);
 
-            if (numOfPagesForStoredTransactions < totalPages) {
+            if (numOfPagesForStoredTransactions < totalPages && newPage === numOfPagesForStoredTransactions) {
                 // Trigger query for more transactions
                 this.props.fetchTransactions(this.props.authentication.uid, this.props.transactions.transactionData[this.props.transactions.transactionData.length - 1]);
-
-                // Disable pagination when querying
-                this.setState({
-                    isFetchingMoreTransactions: true,
-                });
             }
 
             this.setState({
