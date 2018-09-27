@@ -14,7 +14,6 @@ class Transactions extends Component {
 
         this.state = {
             page: 0,
-            isQueryingCategories: false,
         };
 
         this.perPage = process.env.REACT_APP_TRANSACTIONS_PER_PAGE;
@@ -26,21 +25,15 @@ class Transactions extends Component {
     componentDidUpdate(prevProps) {
         setTimeout(() => {
             if (this.props.authentication.uid !== undefined) {
-                if (this.props.transactions.requireUpdate && prevProps.transactions.requireUpdate) {
+                if (this.props.transactions.requireUpdate) {
                     this.props.fetchTransactions(this.props.authentication.uid, null);
-                    console.log('here4');
+                    this.props.fetchTransactionPages(this.props.authentication.uid);
                 }
                 if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
                     this.props.fetchCategory(this.props.authentication.uid);
-                    console.log('here1');
                 }
                 if (_.isEmpty(prevProps.accounts) && _.isEmpty(this.props.accounts)) {
                     this.props.fetchAccounts(this.props.authentication.uid);
-                    console.log('here2');
-                }
-                if (prevProps.transactions.transactionTotalPages === -1 && this.props.transactions.transactionTotalPages === -1) {
-                    this.props.fetchTransactionPages(this.props.authentication.uid);
-                    console.log('here3');
                 }
             }
         }, 400);
@@ -58,6 +51,7 @@ class Transactions extends Component {
 
             // Do request for more transactions (if any)
             const numOfPagesForStoredTransactions = Math.ceil(this.props.transactions.transactionData.length / this.perPage);
+
             if (numOfPagesForStoredTransactions < totalPages) {
                 // Trigger query for more transactions
                 this.props.fetchTransactions(this.props.authentication.uid, this.props.transactions.transactionData[this.props.transactions.transactionData.length - 1]);

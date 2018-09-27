@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { db } from '../../firebase';
 
 import Navigation from '../Navigation';
-import { addTransaction } from '../../actions/transactionActions';
+import { addTransaction, fetchTransactionPages } from '../../actions/transactionActions';
 import { fetchCategory } from '../../actions/categoryActions';
 import { fetchAccounts } from '../../actions/accountActions';
 
@@ -29,7 +29,22 @@ class TransactionsAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.getCategoriesAndAccounts = this.getCategoriesAndAccounts.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        setTimeout(() => {
+            if (this.props.authentication.uid !== undefined) {
+                if (this.props.transactions.requireUpdate && prevProps.transactions.requireUpdate) {
+                    this.props.fetchTransactionPages(this.props.authentication.uid);
+                }
+                if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
+                    this.props.fetchCategory(this.props.authentication.uid);
+                }
+                if (_.isEmpty(prevProps.accounts) && _.isEmpty(this.props.accounts)) {
+                    this.props.fetchAccounts(this.props.authentication.uid);
+                }
+            }
+        }, 400);
     }
 
     onSubmit(evt) {
@@ -42,11 +57,8 @@ class TransactionsAdd extends Component {
         });
 
         db.collection('users').doc(this.props.authentication.uid).collection('transactions').add(submitData)
-            .then((response) => {
-                this.props.addTransaction({
-                    id: response.id,
-                    data: submitData,
-                });
+            .then((doc) => {
+                this.props.addTransaction(this.props.authentication.uid, this.props.transactions.transactionCount, doc);
 
                 this.props.history.push('/transactions');
             });
@@ -58,21 +70,7 @@ class TransactionsAdd extends Component {
         });
     }
 
-    getCategoriesAndAccounts() {
-        // Query for categories if there are none in state
-        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.categories)) {
-            this.props.fetchCategory(this.props.authentication.uid);
-        }
-
-        // Query for accounts if there are none in state
-        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.accounts)) {
-            this.props.fetchAccounts(this.props.authentication.uid);
-        }
-    }
-
     render() {
-        this.getCategoriesAndAccounts();
-
         return (
             <div>
                 <Navigation />
@@ -105,17 +103,22 @@ class TransactionsAdd extends Component {
 
 TransactionsAdd.propTypes = {
     addTransaction: PropTypes.func.isRequired,
+    fetchTransactionPages: PropTypes.func.isRequired,
     fetchCategory: PropTypes.func.isRequired,
     fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
+    transactions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     accounts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     authentication: state.authentication,
+    transactions: state.transactions,
     categories: state.categories,
     accounts: state.accounts,
 });
 
-export default connect(mapStateToProps, { addTransaction, fetchAccounts, fetchCategory })(TransactionsAdd);
+export default connect(mapStateToProps, {
+    addTransaction, fetchTransactionPages, fetchAccounts, fetchCategory,
+})(TransactionsAdd);

@@ -2,6 +2,7 @@ import { ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_PAGES } from '
 
 const initialState = {
     requireUpdate: true,
+    transactionCount: -1,
     transactionTotalPages: -1,
     transactionData: [],
 };
@@ -10,17 +11,14 @@ export default function (state = initialState, action) {
     switch (action.type) {
     case ADD_TRANSACTIONS:
         return {
-            requireUpdate: false,
-            transactionTotalPages: state.transactionTotalPages,
-            transactionData: {
-                ...state.transactionData,
-                [action.payload.id]: action.payload.data,
-            },
+            ...initialState,
+            // transactionData: [...state.transactionData, action.payload],
         };
 
     case FETCH_TRANSACTIONS:
         return {
             requireUpdate: false,
+            transactionCount: state.transactionCount,
             transactionTotalPages: state.transactionTotalPages,
             transactionData: [...state.transactionData, ...action.payload],
         };
@@ -28,7 +26,9 @@ export default function (state = initialState, action) {
     case FETCH_TRANSACTIONS_PAGES:
         return {
             ...state,
-            transactionTotalPages: action.payload,
+            requireUpdate: false,
+            transactionCount: action.payload,
+            transactionTotalPages: Math.ceil(action.payload / process.env.REACT_APP_TRANSACTIONS_PER_PAGE),
         };
 
     default:

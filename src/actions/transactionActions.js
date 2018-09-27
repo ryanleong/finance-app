@@ -2,11 +2,17 @@ import { ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_PAGES } from '
 
 import { db } from '../firebase';
 
-export const addTransaction = data => (dispatch) => {
-    dispatch({
-        type: ADD_TRANSACTIONS,
-        payload: data,
-    });
+export const addTransaction = (uid, transactionCount, doc) => (dispatch) => {
+    db.collection('users').doc(uid)
+        .update({
+            transactionCount: transactionCount + 1,
+        })
+        .then(() => {
+            dispatch({
+                type: ADD_TRANSACTIONS,
+                payload: doc,
+            });
+        });
 };
 
 export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
@@ -36,7 +42,7 @@ export const fetchTransactionPages = uid => (dispatch) => {
         .then((docSnapshots) => {
             dispatch({
                 type: FETCH_TRANSACTIONS_PAGES,
-                payload: Math.ceil(docSnapshots.data().transactionCount / process.env.REACT_APP_TRANSACTIONS_PER_PAGE),
+                payload: docSnapshots.data().transactionCount,
             });
         });
 };
