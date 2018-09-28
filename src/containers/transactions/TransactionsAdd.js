@@ -31,20 +31,15 @@ class TransactionsAdd extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
-        setTimeout(() => {
-            if (this.props.authentication.uid !== undefined) {
-                if (this.props.transactions.transactionCount === -1 && prevProps.transactions.transactionCount === -1) {
-                    this.props.fetchTransactionCount(this.props.authentication.uid);
-                }
-                if (_.isEmpty(prevProps.categories) && _.isEmpty(this.props.categories)) {
-                    this.props.fetchCategory(this.props.authentication.uid);
-                }
-                if (_.isEmpty(prevProps.accounts) && _.isEmpty(this.props.accounts)) {
-                    this.props.fetchAccounts(this.props.authentication.uid);
-                }
-            }
-        }, 400);
+    componentDidUpdate() {
+        // Get number of pages
+        this.props.fetchTransactionCount(this.props.authentication.uid);
+
+        // Fetch Categories
+        this.props.fetchCategory(this.props.authentication.uid);
+
+        // Fetch Accounts
+        this.props.fetchAccounts(this.props.authentication.uid);
     }
 
     onSubmit(evt) {
@@ -84,12 +79,12 @@ class TransactionsAdd extends Component {
 
                     <select name="category" value={this.state.category} onChange={this.onChange}>
                         <option value="-1">No Category</option>
-                        {_.map(this.props.categories, (category, key) => <option key={key} value={key}>{category.name}</option>)}
+                        {_.map(this.props.categories.categoryData, (category, key) => <option key={key} value={key}>{category.name}</option>)}
                     </select>
 
                     <select name="account" value={this.state.account} onChange={this.onChange}>
                         <option value="-1">No Account</option>
-                        {_.map(this.props.accounts, (account, key) => <option key={key} value={key}>{account.name}</option>)}
+                        {_.map(this.props.accounts.accountData, (account, key) => <option key={key} value={key}>{account.name}</option>)}
                     </select>
 
                     <input type="date" name="date" value={this.state.date} onChange={this.onChange} />

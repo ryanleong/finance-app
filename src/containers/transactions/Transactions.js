@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import { fetchTransactions, fetchTransactionCount } from '../../actions/transactionActions';
@@ -72,6 +72,7 @@ class Transactions extends Component {
 
             for (let i = startIndex; i < endIndex; i += 1) {
                 if (this.props.transactions.transactionData[i] !== undefined) {
+                    const { id } = this.props.transactions.transactionData[i];
                     const transaction = this.props.transactions.transactionData[i].data();
 
                     // Display proper string from ID
@@ -80,13 +81,16 @@ class Transactions extends Component {
                     const account = this.props.accounts.accountData[transaction.account] !== undefined ? this.props.accounts.accountData[transaction.account].name : '';
 
                     returnJSX.push(
-                        <tr key={`transaction-${i}`}>
+                        <tr key={id}>
                             <td>{transaction.date}</td>
                             <td>{transaction.name}</td>
                             <td>{transaction.amount}</td>
                             <td>{account}</td>
                             <td>{category}</td>
                             <td>{transaction.description}</td>
+                            <td>
+                                <Link to={`/transactions/edit/${id}`}>Edit</Link>
+                            </td>
                         </tr>,
                     );
                 }
