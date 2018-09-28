@@ -28,25 +28,27 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <Route path="/register" component={Auth(Register)} />
-                <Route path="/signin" component={Auth(Signin)} />
-                <Route path="/signout" component={Auth(Signout)} />
+                <Route exact path="/register" component={Auth(Register)} />
+                <Route exact path="/signin" component={Auth(Signin)} />
+                <Route exact path="/signout" component={Auth(Signout)} />
 
-                <Route path="/dashboard" component={Auth(Dashboard)} />
+                <Route exact path="/dashboard" component={Auth(Dashboard)} />
 
-                <Route path="/transactions/add" component={Auth(TransactionsAdd)} />
+                <Route exact path="/transactions/add" component={Auth(TransactionsAdd)} />
                 <Route path="/transactions/edit/:id" component={Auth(TransactionsEdit)} />
-                <Route path="/transactions" component={Auth(Transactions)} />
+                <Route exact path="/transactions" component={Auth(Transactions)} />
 
                 <Route path="/categories/edit/:id" component={Auth(CategoryEdit)} />
-                <Route path="/categories/add" component={Auth(CategoryAdd)} />
-                <Route path="/categories" component={Auth(Category)} />
+                <Route exact path="/categories/add" component={Auth(CategoryAdd)} />
+                <Route exact path="/categories" component={Auth(Category)} />
 
                 <Route path="/accounts/edit/:id" component={Auth(AccountsEdit)} />
-                <Route path="/accounts/add" component={Auth(AccountsAdd)} />
-                <Route path="/accounts" component={Auth(Accounts)} />
+                <Route exact path="/accounts/add" component={Auth(AccountsAdd)} />
+                <Route exact path="/accounts" component={Auth(Accounts)} />
 
-                <Route path="/" component={Auth(Home)} />
+                <Route exact path="/" component={Auth(Home)} />
+
+                <Route component={() => <h1>404</h1>} />
             </Switch>
         </Router>
     </Provider>,
