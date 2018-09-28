@@ -23,7 +23,11 @@ export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
     const perPage = parseInt(process.env.REACT_APP_TRANSACTIONS_PER_PAGE, 10);
     const state = store.getState();
 
-    if (!state.transactions.isFetchingTransactions) {
+    // Check for auth
+    if (state.authentication.uid === undefined) return;
+
+    // If require update and not already fetching
+    if (state.transactions.requireUpdate && !state.transactions.isFetchingTransactions) {
         // Mark as fetching
         dispatch({ type: START_FETCHING_TRANSACTIONS });
 
@@ -51,7 +55,11 @@ export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
 export const fetchTransactionCount = uid => (dispatch) => {
     const state = store.getState();
 
-    if (!state.transactions.isFetchingTransactionsCount) {
+    // Check for auth
+    if (state.authentication.uid === undefined) return;
+
+    // If require update and not already fetching
+    if (state.transactions.requireUpdate && !state.transactions.isFetchingTransactionsCount) {
         // Mark as fetching
         dispatch({ type: START_FETCHING_TRANSACTIONS_COUNT });
 

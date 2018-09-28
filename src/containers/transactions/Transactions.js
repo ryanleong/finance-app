@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import Navigation from '../Navigation';
 import { fetchTransactions, fetchTransactionCount } from '../../actions/transactionActions';
@@ -24,44 +24,18 @@ class Transactions extends Component {
         this.doPaginate = this.doPaginate.bind(this);
     }
 
-    static getDerivedStateFromProps(props, state) {
-        let { isFetchingCategories, isFetchingAccounts } = state;
+    componentDidUpdate() {
+        // Fetch Transactions
+        this.props.fetchTransactions(this.props.authentication.uid, null);
 
-        if (props.authentication.uid !== undefined) {
-            if (props.transactions.requireUpdate) {
-                // Fetch Transactions
-                props.fetchTransactions(props.authentication.uid, null);
+        // Get number of pages
+        this.props.fetchTransactionCount(this.props.authentication.uid);
 
-                // Get number of pages
-                props.fetchTransactionCount(props.authentication.uid);
-            }
+        // Fetch Categories
+        this.props.fetchCategory(this.props.authentication.uid);
 
-            // Fetch Categories
-            if (_.isEmpty(props.categories)) {
-                if (!state.isFetchingCategories) {
-                    isFetchingCategories = true;
-                    props.fetchCategory(props.authentication.uid);
-                }
-            } else {
-                isFetchingCategories = false;
-            }
-
-            // Fetch Accounts
-            if (_.isEmpty(props.accounts)) {
-                if (!state.isFetchingAccounts) {
-                    isFetchingAccounts = true;
-                    props.fetchAccounts(props.authentication.uid);
-                }
-            } else {
-                isFetchingAccounts = false;
-            }
-        }
-
-        return {
-            ...state,
-            isFetchingCategories,
-            isFetchingAccounts,
-        };
+        // Fetch Accounts
+        this.props.fetchAccounts(this.props.authentication.uid);
     }
 
     doPaginate(evt) {
@@ -101,9 +75,9 @@ class Transactions extends Component {
                     const transaction = this.props.transactions.transactionData[i].data();
 
                     // Display proper string from ID
-                    const category = this.props.categories[transaction.category] !== undefined ? this.props.categories[transaction.category].name : '';
+                    const category = this.props.categories.categoryData[transaction.category] !== undefined ? this.props.categories.categoryData[transaction.category].name : '';
 
-                    const account = this.props.accounts[transaction.account] !== undefined ? this.props.accounts[transaction.account].name : '';
+                    const account = this.props.accounts.accountData[transaction.account] !== undefined ? this.props.accounts.accountData[transaction.account].name : '';
 
                     returnJSX.push(
                         <tr key={`transaction-${i}`}>
@@ -163,9 +137,9 @@ class Transactions extends Component {
 
 Transactions.propTypes = {
     fetchTransactions: PropTypes.func.isRequired,
-    // fetchTransactionCount: PropTypes.func.isRequired,
-    // fetchCategory: PropTypes.func.isRequired,
-    // fetchAccounts: PropTypes.func.isRequired,
+    fetchTransactionCount: PropTypes.func.isRequired,
+    fetchCategory: PropTypes.func.isRequired,
+    fetchAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
     transactions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,

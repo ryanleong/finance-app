@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,37 +7,40 @@ import _ from 'lodash';
 import Navigation from '../Navigation';
 import { fetchAccounts } from '../../actions/accountActions';
 
-const renderAccounts = (categories) => {
-    if (!_.isEmpty(categories)) {
-        return _.map(categories, (category, key) => (
-            <li key={key}>
-                {category.name}
-                {' '}
-                <Link to={`/accounts/edit/${key}`}>Edit</Link>
-            </li>
-        ));
+class Accounts extends Component {
+    componentDidUpdate() {
+        // Fetch account details
+        this.props.fetchAccounts(this.props.authentication.uid);
     }
 
-    return null;
-};
+    renderAccounts() {
+        const accounts = this.props.accounts.accountData;
 
-const Accounts = (props) => {
-    setTimeout(() => {
-        if (props.authentication.uid !== undefined && _.isEmpty(props.accounts)) {
-            props.fetchAccounts(props.authentication.uid);
+        if (!_.isEmpty(accounts)) {
+            return _.map(accounts, (account, key) => (
+                <li key={key}>
+                    {account.name}
+                    {' '}
+                    <Link to={`/accounts/edit/${key}`}>Edit</Link>
+                </li>
+            ));
         }
-    }, 400);
 
-    return (
-        <React.Fragment>
-            <Navigation />
-            <h1>Accounts</h1>
-            <ul>
-                {renderAccounts(props.accounts)}
-            </ul>
-        </React.Fragment>
-    );
-};
+        return null;
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <Navigation />
+                <h1>Accounts</h1>
+                <ul>
+                    {this.renderAccounts()}
+                </ul>
+            </React.Fragment>
+        );
+    }
+}
 
 Accounts.propTypes = {
     fetchAccounts: PropTypes.func.isRequired,
