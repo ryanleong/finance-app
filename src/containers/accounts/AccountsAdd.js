@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { db } from '../../firebase';
 import Navigation from '../Navigation';
-import { addAccounts } from '../../actions/accountActions';
+import { addAccounts, fetchAccounts } from '../../actions/accountActions';
 
 const INITIAL_STATE = {
     name: '',
@@ -18,6 +18,11 @@ class AccountsAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidUpdate() {
+        // Fetch account details
+        this.props.fetchAccounts(this.props.authentication.uid);
     }
 
     onChange(evt) {
@@ -56,6 +61,7 @@ class AccountsAdd extends Component {
 }
 
 AccountsAdd.propTypes = {
+    fetchAccounts: PropTypes.func.isRequired,
     addAccounts: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
 };
@@ -64,4 +70,4 @@ const mapStateToProps = state => ({
     authentication: state.authentication,
 });
 
-export default connect(mapStateToProps, { addAccounts })(AccountsAdd);
+export default connect(mapStateToProps, { addAccounts, fetchAccounts })(AccountsAdd);

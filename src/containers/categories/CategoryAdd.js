@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 
 import { db } from '../../firebase';
 import Navigation from '../Navigation';
-import { addCategory } from '../../actions/categoryActions';
+import { addCategory, fetchCategory } from '../../actions/categoryActions';
 
 const INITIAL_STATE = {
     name: '',
 };
-
 
 class CategoryAdd extends Component {
     constructor(props) {
@@ -21,6 +20,11 @@ class CategoryAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidUpdate() {
+        // Fetch categories
+        this.props.fetchCategory(this.props.authentication.uid);
     }
 
     onSubmit(evt) {
@@ -59,6 +63,7 @@ class CategoryAdd extends Component {
 }
 
 CategoryAdd.propTypes = {
+    fetchCategory: PropTypes.func.isRequired,
     addCategory: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
 };
@@ -67,4 +72,4 @@ const mapStateToProps = state => ({
     authentication: state.authentication,
 });
 
-export default connect(mapStateToProps, { addCategory })(CategoryAdd);
+export default connect(mapStateToProps, { addCategory, fetchCategory })(CategoryAdd);
