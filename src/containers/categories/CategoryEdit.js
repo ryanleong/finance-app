@@ -17,7 +17,22 @@ class CategoryEdit extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.getCategories = this.getCategories.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (!_.isEmpty(props.categories.categoryData) && state.name === '') {
+            return {
+                ...state,
+                name: props.categories.categoryData[props.match.params.id].name,
+            };
+        }
+
+        return { ...state };
+    }
+
+    componentDidUpdate() {
+        // Fetch categories
+        this.props.fetchCategory(this.props.authentication.uid);
     }
 
     onChange(evt) {
@@ -40,24 +55,7 @@ class CategoryEdit extends Component {
             });
     }
 
-    getCategories() {
-        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.categories)) {
-            this.props.fetchCategory(this.props.authentication.uid);
-        }
-    }
-
     render() {
-        this.getCategories();
-
-        if (!_.isEmpty(this.props.categories) && this.state.name === '') {
-            setTimeout(() => {
-                this.setState({
-                    name: this.props.categories[this.props.match.params.id].name,
-                });
-            }, 100);
-        }
-
-
         return (
             <React.Fragment>
                 <Navigation />
@@ -77,7 +75,6 @@ CategoryEdit.propTypes = {
     editCategory: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     authentication: PropTypes.object.isRequired,
-    categories: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

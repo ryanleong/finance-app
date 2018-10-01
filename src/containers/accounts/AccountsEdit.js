@@ -17,7 +17,22 @@ class AccountsEdit extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.getAccounts = this.getAccounts.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (!_.isEmpty(props.accounts.accountData) && state.name === '') {
+            return {
+                ...state,
+                name: props.accounts.accountData[props.match.params.id].name,
+            };
+        }
+
+        return { ...state };
+    }
+
+    componentDidUpdate() {
+        // Fetch account details
+        this.props.fetchAccounts(this.props.authentication.uid);
     }
 
     onChange(evt) {
@@ -40,24 +55,7 @@ class AccountsEdit extends Component {
             });
     }
 
-    getAccounts() {
-        if (this.props.authentication.uid !== undefined && _.isEmpty(this.props.accounts)) {
-            this.props.fetchAccounts(this.props.authentication.uid);
-        }
-    }
-
     render() {
-        this.getAccounts();
-
-        if (!_.isEmpty(this.props.accounts) && this.state.name === '') {
-            setTimeout(() => {
-                this.setState({
-                    name: this.props.accounts[this.props.match.params.id].name,
-                });
-            }, 100);
-        }
-
-
         return (
             <React.Fragment>
                 <Navigation />
@@ -77,7 +75,6 @@ AccountsEdit.propTypes = {
     editAccounts: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     authentication: PropTypes.object.isRequired,
-    accounts: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
