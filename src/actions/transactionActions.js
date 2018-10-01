@@ -1,10 +1,15 @@
 import {
-    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_COUNT, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_COUNT, END_FETCHING_TRANSACTIONS_COUNT,
+    ADD_TRANSACTIONS, FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_COUNT, START_FETCHING_TRANSACTIONS, END_FETCHING_TRANSACTIONS, START_FETCHING_TRANSACTIONS_COUNT, END_FETCHING_TRANSACTIONS_COUNT, SET_TRANSACTIONS_REQUIRE_UPDATE,
 } from './types';
 
 import store from '../store';
 import { db } from '../firebase';
 
+export const setTransactionsRequireUpdate = () => (dispatch) => {
+    dispatch({
+        type: SET_TRANSACTIONS_REQUIRE_UPDATE,
+    });
+};
 
 export const addTransaction = (uid, transactionCount, doc) => (dispatch) => {
     db.collection('users').doc(uid)
