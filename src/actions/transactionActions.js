@@ -27,7 +27,7 @@ export const fetchTransactions = (uid, latestTransaction) => (dispatch) => {
     if (state.authentication.uid === undefined) return;
 
     // If require update and not already fetching
-    if (state.transactions.requireUpdate && !state.transactions.isFetchingTransactions) {
+    if (!state.transactions.isFetchingTransactions) {
         // Mark as fetching
         dispatch({ type: START_FETCHING_TRANSACTIONS });
 
@@ -59,7 +59,7 @@ export const fetchTransactionCount = uid => (dispatch) => {
     if (state.authentication.uid === undefined) return;
 
     // If require update and not already fetching
-    if (state.transactions.requireUpdate && !state.transactions.isFetchingTransactionsCount) {
+    if (!state.transactions.isFetchingTransactionsCount) {
         // Mark as fetching
         dispatch({ type: START_FETCHING_TRANSACTIONS_COUNT });
 

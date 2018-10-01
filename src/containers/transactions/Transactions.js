@@ -25,11 +25,13 @@ class Transactions extends Component {
     }
 
     componentDidUpdate() {
-        // Fetch Transactions
-        this.props.fetchTransactions(this.props.authentication.uid, null);
+        if (this.props.transactions.requireUpdate) {
+            // Fetch Transactions
+            this.props.fetchTransactions(this.props.authentication.uid, null);
 
-        // Get number of pages
-        this.props.fetchTransactionCount(this.props.authentication.uid);
+            // Get number of pages
+            this.props.fetchTransactionCount(this.props.authentication.uid);
+        }
 
         // Fetch Categories
         this.props.fetchCategory(this.props.authentication.uid);

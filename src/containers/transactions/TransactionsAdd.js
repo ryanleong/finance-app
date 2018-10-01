@@ -33,7 +33,7 @@ class TransactionsAdd extends Component {
 
     componentDidUpdate() {
         // Get number of pages
-        this.props.fetchTransactionCount(this.props.authentication.uid);
+        if (this.props.transactions.requireUpdate) this.props.fetchTransactionCount(this.props.authentication.uid);
 
         // Fetch Categories
         this.props.fetchCategory(this.props.authentication.uid);
