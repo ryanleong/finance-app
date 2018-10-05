@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { auth, db } from '../../components/firebase';
+import { auth } from '../../components/firebase';
+import updateAuthState from '../../actions/authenticationActions';
 
 const INITIAL_STATE = {
     email: '',
     password: '',
-    password2: '',
     error: null,
 };
 
-class Register extends Component {
+class Signin extends Component {
     constructor(props) {
         super(props);
 
@@ -33,17 +33,17 @@ class Register extends Component {
 
         const { email, password } = this.state;
 
-        try {
-            const authUser = await auth.createUserWithEmailAndPassword(email, password);
+        this.setState({ ...INITIAL_STATE });
 
-            // Create new db entry
-            const newUser = db.collection('users').doc(authUser.user.uid);
-            await newUser.set({});
+        try {
+            // Signin user
+            const authUser = await auth.signInWithEmailAndPassword(email, password);
+            // console.log('TCL: Signin -> asynconSubmit -> authUser', authUser.user);
 
             // TODO: Display registered notification
 
-            // Redirect to login page
-            this.props.history.push('/signin');
+            this.props.updateAuthState(authUser.user);
+            this.props.history.push('/dashboard');
         } catch (error) {
             this.setState({ error });
         }
@@ -61,15 +61,15 @@ class Register extends Component {
                 <form onSubmit={this.onSubmit}>
                     <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />
                     <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} />
-                    <input type="password" placeholder="Confirm Password" name="password2" value={this.state.password2} onChange={this.onChange} />
-                    <input type="submit" value="Register" />
+                    <input type="submit" value="Signin" />
                 </form>
             </React.Fragment>
         );
     }
 }
 
-Register.propTypes = {
+Signin.propTypes = {
+    updateAuthState: PropTypes.func.isRequired,
     authentication: PropTypes.object.isRequired,
 };
 
@@ -77,4 +77,4 @@ const mapStateToProps = state => ({
     authentication: state.authentication,
 });
 
-export default connect(mapStateToProps, {})(Register);
+export default connect(mapStateToProps, { updateAuthState })(Signin);
