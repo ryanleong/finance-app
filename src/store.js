@@ -19,8 +19,8 @@ const store = createStore(
     initialState,
     compose(
         applyMiddleware(...middleware),
-        reduxDebugger // For Redux DevTools in Chrome
-    )
+        reduxDebugger, // For Redux DevTools in Chrome
+    ),
 );
 
 export default store;
