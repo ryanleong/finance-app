@@ -1,9 +1,13 @@
 import { UPDATE_AUTH_STATE } from './types';
 
-const updateAuthState = authUser => (dispatch) => {
-    dispatch({
-        type: UPDATE_AUTH_STATE,
-        payload: authUser || {},
+import { firebase } from '../components/firebase';
+
+const updateAuthState = () => (dispatch) => {
+    firebase.auth().onAuthStateChanged((user) => {
+        dispatch({
+            type: UPDATE_AUTH_STATE,
+            payload: user || null,
+        });
     });
 };
 

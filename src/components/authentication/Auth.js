@@ -1,15 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { firebase } from '../firebase';
 import updateAuthState from '../../actions/authenticationActions';
 
 export default (BaseComponent) => {
     class HOC extends React.Component {
         componentWillMount() {
-            firebase.auth().onAuthStateChanged((authUser) => {
-                this.props.updateAuthState(authUser);
-            });
+            this.props.updateAuthState();
         }
 
         render() {
@@ -17,5 +14,9 @@ export default (BaseComponent) => {
         }
     }
 
-    return connect(null, { updateAuthState })(HOC);
+    const mapStateToProps = state => ({
+        authentication: state.authentication,
+    });
+
+    return connect(mapStateToProps, { updateAuthState })(HOC);
 };

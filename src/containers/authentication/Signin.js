@@ -37,12 +37,11 @@ class Signin extends Component {
 
         try {
             // Signin user
-            const authUser = await auth.signInWithEmailAndPassword(email, password);
-            // console.log('TCL: Signin -> asynconSubmit -> authUser', authUser.user);
+            await auth.signInWithEmailAndPassword(email, password);
 
             // TODO: Display registered notification
 
-            this.props.updateAuthState(authUser.user);
+            this.props.updateAuthState();
             this.props.history.push('/dashboard');
         } catch (error) {
             this.setState({ error });
