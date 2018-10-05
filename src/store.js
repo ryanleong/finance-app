@@ -1,14 +1,14 @@
 /* eslint no-underscore-dangle: 0 */
 
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 
 import rootReducer from './reducers';
 
 const initialState = {};
 
 // List of Middlewards
-const middleware = [thunk];
+const middleware = [];
 
 const reduxDebugger = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
     ? window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -19,8 +19,8 @@ const store = createStore(
     initialState,
     compose(
         applyMiddleware(...middleware),
-        reduxDebugger, // For Redux DevTools in Chrome
-    ),
+        reduxDebugger // For Redux DevTools in Chrome
+    )
 );
 
 export default store;
