@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Auth from './components/authentication/Auth';
+import AuthCheck from './components/authentication/AuthCheck';
+import NoAuthCheck from './components/authentication/NoAuthCheck';
 import Dashboard from './containers/Dashboard';
 import Signup from './containers/authentication/Signup';
 import Signin from './containers/authentication/Signin';
@@ -19,11 +20,11 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/signup" component={Auth(Signup)} />
-                    <Route exact path="/signin" component={Auth(Signin)} />
+                    <Route exact path="/signup" component={NoAuthCheck(Signup)} />
+                    <Route exact path="/signin" component={NoAuthCheck(Signin)} />
 
-                    <Route exact path="/signout" component={Auth(Signout)} />
-                    <Route exact path="/dashboard" component={Auth(Dashboard)} />
+                    <Route exact path="/signout" component={Signout} />
+                    <Route exact path="/dashboard" component={AuthCheck(Dashboard)} />
 
                     <Route component={() => <h1>404</h1>} />
                 </Switch>
