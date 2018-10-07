@@ -2,11 +2,12 @@ import React from 'react';
 
 import Navigation from '../components/Navigation';
 
-const Dashboard = () => (
+const Home = () => (
     <div>
         <Navigation />
-        <h1>Dashboard</h1>
+        <h1>Home</h1>
     </div>
 );
 
-export default Dashboard;
+
+export default Home;

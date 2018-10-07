@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AuthCheck from './components/authentication/AuthCheck';
 import NoAuthCheck from './components/authentication/NoAuthCheck';
+import Landing from './containers/Landing';
 import Dashboard from './containers/Dashboard';
 import Signup from './containers/authentication/Signup';
 import Signin from './containers/authentication/Signin';
@@ -25,6 +26,8 @@ class App extends Component {
 
                     <Route exact path="/signout" component={Signout} />
                     <Route exact path="/dashboard" component={AuthCheck(Dashboard)} />
+
+                    <Route exact path="/" component={Landing} />
 
                     <Route component={() => <h1>404</h1>} />
                 </Switch>

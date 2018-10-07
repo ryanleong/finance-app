@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { auth } from '../../components/firebase';
 import updateAuthState from '../../actions/authenticationActions';
+import Navigation from '../../components/Navigation';
 
 const INITIAL_STATE = {
     email: '',
@@ -57,6 +58,9 @@ class Signin extends Component {
     render() {
         return (
             <React.Fragment>
+                <h1>Sign in</h1>
+                <Navigation />
+
                 <form onSubmit={this.onSubmit}>
                     <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />
                     <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} />
