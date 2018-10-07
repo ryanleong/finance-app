@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Navigation from '../../components/Navigation';
 import RenderTransactions from '../../components/transactions/Transactions';
 import fetchData from '../../actions/userDataActions';
+import { deleteTransaction } from '../../actions/transactionsActions';
 
 class Transactions extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class Transactions extends Component {
                 </div>
 
 
-                {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={10} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} />}
+                {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={10} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} />}
             </div>
         );
     }
@@ -39,6 +40,7 @@ class Transactions extends Component {
 
 Transactions.propTypes = {
     fetchData: PropTypes.func.isRequired,
+    deleteTransaction: PropTypes.func.isRequired,
     userData: PropTypes.object.isRequired,
 };
 
@@ -46,4 +48,4 @@ const mapStateToProps = state => ({
     userData: state.userData,
 });
 
-export default connect(mapStateToProps, { fetchData })(Transactions);
+export default connect(mapStateToProps, { fetchData, deleteTransaction })(Transactions);

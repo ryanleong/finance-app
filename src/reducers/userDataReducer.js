@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE, DELETE_TRANSACTION, DELETE_TRANSACTION_SUCCESS, DELETE_TRANSACTION_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -116,6 +116,7 @@ export default function (state = initialState, action) {
 
     case ADD_TRANSACTION:
     case EDIT_TRANSACTION:
+    case DELETE_TRANSACTION:
         return {
             ...state,
             isUpdatingTransaction: true,
@@ -141,8 +142,17 @@ export default function (state = initialState, action) {
             transactions: sortTransactionsDesc(replaceInArray(state.transactions, action.payload)),
         };
 
+    case DELETE_TRANSACTION_SUCCESS:
+        return {
+            ...state,
+            isUpdatingTransaction: false,
+            hasFailed: false,
+            transactions: _.remove(state.transactions, transaction => transaction.id !== action.payload),
+        };
+
     case ADD_TRANSACTION_FAILURE:
     case EDIT_TRANSACTION_FAILURE:
+    case DELETE_TRANSACTION_FAILURE:
         return {
             ...state,
             isUpdatingTransaction: false,

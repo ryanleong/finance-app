@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import convertIdToName from '../Utilities';
 
 const renderRows = ({
-    transactions, accounts, categories, pageNum, perPage,
+    transactions, accounts, categories, pageNum, perPage, doDelete,
 }) => {
     if (transactions.length > 0) {
         const returnJSX = [];
@@ -34,9 +34,9 @@ const renderRows = ({
                         <td>
                             <Link to={`/transactions/edit/${id}`}>Edit</Link>
                         </td>
-                        {/* <td>
-                            <span onClick={() => { doDelete(id); }} data-key={id}>Delete</span>
-                        </td> */}
+                        <td>
+                            <span onClick={() => { if (window.confirm('Confirm deletion?')) doDelete(id); }} data-key={id}>Delete</span>
+                        </td>
                     </tr>,
                 );
             }

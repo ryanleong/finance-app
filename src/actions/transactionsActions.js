@@ -1,5 +1,5 @@
 import {
-    ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE,
+    ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE, DELETE_TRANSACTION, DELETE_TRANSACTION_SUCCESS, DELETE_TRANSACTION_FAILURE,
 } from './types';
 
 import store from '../store';
@@ -52,9 +52,31 @@ export const editTransaction = (submitData, transactionId) => async (dispatch) =
             },
         });
     } catch (e) {
-        console.log('TCL: }catch -> e', e);
         dispatch({
             type: EDIT_TRANSACTION_FAILURE,
+        });
+    }
+};
+
+export const deleteTransaction = transactionId => async (dispatch) => {
+    const state = store.getState();
+    const { uid } = state.authentication;
+
+    if (state.userData.isUpdatingAccount) return;
+
+    dispatch({ type: DELETE_TRANSACTION });
+
+    try {
+        await db.collection('users').doc(uid).collection('transactions').doc(transactionId)
+            .delete();
+
+        dispatch({
+            type: DELETE_TRANSACTION_SUCCESS,
+            payload: transactionId,
+        });
+    } catch (e) {
+        dispatch({
+            type: DELETE_TRANSACTION_FAILURE,
         });
     }
 };
