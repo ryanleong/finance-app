@@ -1,5 +1,5 @@
 import {
-    ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE,
+    ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, DELETE_CATEGORY, DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
 } from './types';
 
 import store from '../store';
@@ -55,6 +55,29 @@ export const editCategory = (name, categoryId) => async (dispatch) => {
     } catch (e) {
         dispatch({
             type: EDIT_CATEGORY_FAILURE,
+        });
+    }
+};
+
+export const deleteCategory = categoryId => async (dispatch) => {
+    const state = store.getState();
+    const { uid } = state.authentication;
+
+    if (state.userData.isUpdatingCategory) return;
+
+    dispatch({ type: DELETE_CATEGORY });
+
+    try {
+        await db.collection('users').doc(uid).collection('categories').doc(categoryId)
+            .delete();
+
+        dispatch({
+            type: DELETE_CATEGORY_SUCCESS,
+            payload: categoryId,
+        });
+    } catch (e) {
+        dispatch({
+            type: DELETE_CATEGORY_FAILURE,
         });
     }
 };

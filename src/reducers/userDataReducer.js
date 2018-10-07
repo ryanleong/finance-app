@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE, DELETE_TRANSACTION, DELETE_TRANSACTION_SUCCESS, DELETE_TRANSACTION_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE, DELETE_TRANSACTION, DELETE_TRANSACTION_SUCCESS, DELETE_TRANSACTION_FAILURE, DELETE_CATEGORY, DELETE_CATEGORY_SUCCESS, DELETE_CATEGORY_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -35,6 +35,8 @@ const sortTransactionsDesc = transactions => transactions.sort((a, b) => {
 });
 
 export default function (state = initialState, action) {
+    const categories = { ...state.categories };
+
     switch (action.type) {
     case DATA_REQUEST:
         return {
@@ -88,6 +90,7 @@ export default function (state = initialState, action) {
 
     case ADD_CATEGORY:
     case EDIT_CATEGORY:
+    case DELETE_CATEGORY:
         return {
             ...state,
             isUpdatingCategory: true,
@@ -101,13 +104,26 @@ export default function (state = initialState, action) {
             isUpdatingCategory: false,
             hasFailed: false,
             categories: {
-                ...state.categories,
+                ...categories,
                 ...action.payload,
+            },
+        };
+
+    case DELETE_CATEGORY_SUCCESS:
+        delete categories[action.payload];
+
+        return {
+            ...state,
+            isUpdatingCategory: false,
+            hasFailed: false,
+            categories: {
+                ...categories,
             },
         };
 
     case ADD_CATEGORY_FAILURE:
     case EDIT_CATEGORY_FAILURE:
+    case DELETE_CATEGORY_FAILURE:
         return {
             ...state,
             isUpdatingCategory: false,

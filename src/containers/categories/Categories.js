@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
+import { deleteCategory } from '../../actions/categoryActions';
 import RenderCategories from '../../components/categories/Categories';
 
 class Categories extends Component {
@@ -17,7 +18,7 @@ class Categories extends Component {
                 <Navigation />
                 <h1>Category</h1>
                 <ul>
-                    <RenderCategories categories={this.props.userData.categories} />
+                    <RenderCategories categories={this.props.userData.categories} doDelete={this.props.deleteCategory} />
                 </ul>
             </React.Fragment>
         );
@@ -26,6 +27,7 @@ class Categories extends Component {
 
 Categories.propTypes = {
     fetchData: PropTypes.func.isRequired,
+    deleteCategory: PropTypes.func.isRequired,
     userData: PropTypes.object.isRequired,
 };
 
@@ -33,4 +35,4 @@ const mapStateToProps = state => ({
     userData: state.userData,
 });
 
-export default connect(mapStateToProps, { fetchData })(Categories);
+export default connect(mapStateToProps, { fetchData, deleteCategory })(Categories);
