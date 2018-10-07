@@ -16,6 +16,7 @@ import Transactions from './containers/transactions/Transactions';
 import TransactionsAdd from './containers/transactions/TransactionsAdd';
 import Categories from './containers/categories/Categories';
 import CategoriesAdd from './containers/categories/CategoriesAdd';
+import CategoriesEdit from './containers/categories/CategoriesEdit';
 import Accounts from './containers/accounts/Accounts';
 import AccountsAdd from './containers/accounts/AccountsAdd';
 import AccountsEdit from './containers/accounts/AccountsEdit';
@@ -41,10 +42,11 @@ class App extends Component {
                     <Route exact path="/transactions" component={AuthCheck(Transactions)} />
 
                     <Route exact path="/categories/add" component={AuthCheck(CategoriesAdd)} />
+                    <Route path="/categories/edit/:id" component={AuthCheck(CategoriesEdit)} />
                     <Route exact path="/categories" component={AuthCheck(Categories)} />
 
                     <Route exact path="/accounts/add" component={AuthCheck(AccountsAdd)} />
-                    <Route exact path="/accounts/edit/:id" component={AuthCheck(AccountsEdit)} />
+                    <Route path="/accounts/edit/:id" component={AuthCheck(AccountsEdit)} />
                     <Route exact path="/accounts" component={AuthCheck(Accounts)} />
 
                     <Route exact path="/" component={Landing} />

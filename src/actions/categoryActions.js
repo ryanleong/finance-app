@@ -1,9 +1,11 @@
-import { ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE } from './types';
+import {
+    ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE,
+} from './types';
 
 import store from '../store';
 import { db } from '../components/firebase';
 
-const addCategory = name => async (dispatch) => {
+export const addCategory = name => async (dispatch) => {
     const state = store.getState();
     const { uid } = state.authentication;
 
@@ -30,4 +32,29 @@ const addCategory = name => async (dispatch) => {
     }
 };
 
-export default addCategory;
+export const editCategory = (name, categoryId) => async (dispatch) => {
+    const state = store.getState();
+    const { uid } = state.authentication;
+
+    if (state.userData.isUpdatingCategory) return;
+
+    dispatch({ type: EDIT_CATEGORY });
+
+    try {
+        await db.collection('users').doc(uid).collection('categories').doc(categoryId)
+            .update({
+                name,
+            });
+
+        dispatch({
+            type: EDIT_CATEGORY_SUCCESS,
+            payload: {
+                [categoryId]: { name },
+            },
+        });
+    } catch (e) {
+        dispatch({
+            type: EDIT_CATEGORY_FAILURE,
+        });
+    }
+};

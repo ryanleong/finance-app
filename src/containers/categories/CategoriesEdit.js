@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 // import { db } from '../../components/firebase';
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
-import { addCategory } from '../../actions/categoryActions';
+import { editCategory } from '../../actions/categoryActions';
 
 const INITIAL_STATE = {
     name: '',
 };
 
-class CategoriesAdd extends Component {
+class CategoriesEdit extends Component {
     constructor(props) {
         super(props);
 
@@ -19,6 +19,19 @@ class CategoriesAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        // Get label name by id
+        if (state.name === '') {
+            const label = props.userData.categories[props.match.params.id];
+            return {
+                ...state,
+                name: label === undefined ? '' : label.name,
+            };
+        }
+
+        return state;
     }
 
     componentDidMount() {
@@ -41,7 +54,7 @@ class CategoriesAdd extends Component {
 
     onSubmit(evt) {
         evt.preventDefault();
-        this.props.addCategory(this.state.name);
+        this.props.editCategory(this.state.name, this.props.match.params.id);
     }
 
     render() {
@@ -59,14 +72,15 @@ class CategoriesAdd extends Component {
     }
 }
 
-CategoriesAdd.propTypes = {
+CategoriesEdit.propTypes = {
     fetchData: PropTypes.func.isRequired,
-    addCategory: PropTypes.func.isRequired,
+    editCategory: PropTypes.func.isRequired,
     userData: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     userData: state.userData,
 });
 
-export default connect(mapStateToProps, { fetchData, addCategory })(CategoriesAdd);
+export default connect(mapStateToProps, { fetchData, editCategory })(CategoriesEdit);

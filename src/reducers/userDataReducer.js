@@ -1,5 +1,5 @@
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -72,6 +72,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_CATEGORY:
+    case EDIT_CATEGORY:
         return {
             ...state,
             isUpdatingCategory: true,
@@ -79,6 +80,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_CATEGORY_SUCCESS:
+    case EDIT_CATEGORY_SUCCESS:
         return {
             ...state,
             isUpdatingCategory: false,
@@ -90,6 +92,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_CATEGORY_FAILURE:
+    case EDIT_CATEGORY_FAILURE:
         return {
             ...state,
             isUpdatingCategory: false,
