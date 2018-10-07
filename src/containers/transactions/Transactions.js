@@ -13,11 +13,37 @@ class Transactions extends Component {
 
         this.state = {
             pageNum: 0,
+            totalPages: -1,
         };
+
+        this.doPaginate = this.doPaginate.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        // Set total number of pages
+        if (state.totalPages === -1 && props.userData.transactions.length > 0) {
+            return {
+                ...state,
+                totalPages: Math.ceil(props.userData.transactions.length / process.env.REACT_APP_TRANSACTIONS_PER_PAGE),
+            };
+        }
+
+        return null;
     }
 
     componentDidMount() {
         this.props.fetchData();
+    }
+
+    doPaginate(evt) {
+        const { pageNum, totalPages } = this.state;
+        const newPage = evt.target.id === 'prev' ? pageNum - 1 : pageNum + 1;
+
+        if (newPage >= 0 && newPage < totalPages) {
+            this.setState({
+                pageNum: newPage,
+            });
+        }
     }
 
     render() {
@@ -32,7 +58,7 @@ class Transactions extends Component {
                 </div>
 
 
-                {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={10} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} />}
+                {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={process.env.REACT_APP_TRANSACTIONS_PER_PAGE} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} />}
             </div>
         );
     }
