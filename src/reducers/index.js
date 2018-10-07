@@ -1,13 +1,9 @@
 import { combineReducers } from 'redux';
 
 import authenticationReducer from './authenticationReducer';
-// import accountReducer from './accountReducer';
-// import categoryReducer from './categoryReducer';
-// import transactionReducer from './transactionReducer';
+import userDataReducer from './userDataReducer';
 
 export default combineReducers({
     authentication: authenticationReducer,
-    // accounts: accountReducer,
-    // categories: categoryReducer,
-    // transactions: transactionReducer,
+    userData: userDataReducer,
 });
