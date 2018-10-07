@@ -18,6 +18,7 @@ import Categories from './containers/categories/Categories';
 import CategoriesAdd from './containers/categories/CategoriesAdd';
 import Accounts from './containers/accounts/Accounts';
 import AccountsAdd from './containers/accounts/AccountsAdd';
+import AccountsEdit from './containers/accounts/AccountsEdit';
 
 import updateAuthState from './actions/authenticationActions';
 
@@ -43,6 +44,7 @@ class App extends Component {
                     <Route exact path="/categories" component={AuthCheck(Categories)} />
 
                     <Route exact path="/accounts/add" component={AuthCheck(AccountsAdd)} />
+                    <Route exact path="/accounts/edit/:id" component={AuthCheck(AccountsEdit)} />
                     <Route exact path="/accounts" component={AuthCheck(Accounts)} />
 
                     <Route exact path="/" component={Landing} />

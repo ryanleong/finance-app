@@ -1,5 +1,5 @@
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -44,6 +44,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_ACCOUNT:
+    case EDIT_ACCOUNT:
         return {
             ...state,
             isUpdatingAccount: true,
@@ -51,6 +52,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_ACCOUNT_SUCCESS:
+    case EDIT_ACCOUNT_SUCCESS:
         return {
             ...state,
             isUpdatingAccount: false,
@@ -62,6 +64,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_ACCOUNT_FAILURE:
+    case EDIT_ACCOUNT_FAILURE:
         return {
             ...state,
             isUpdatingAccount: false,
