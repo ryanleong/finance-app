@@ -44,7 +44,7 @@ class Register extends Component {
             // TODO: Display registered notification
 
             // Redirect to login page
-            this.props.history.push('/signin');
+            this.props.history.push('/dashboard');
         } catch (error) {
             this.setState({ error });
         }
