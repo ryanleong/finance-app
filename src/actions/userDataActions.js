@@ -1,4 +1,5 @@
 import { DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE } from './types';
+// import _ from 'lodash';
 
 import store from '../store';
 import { db } from '../components/firebase';
@@ -20,14 +21,22 @@ const fetchData = () => async (dispatch) => {
             .get();
 
         const accountDocs = await db.collection('users').doc(uid).collection('accounts').get();
+        let accountList = [];
+        accountDocs.docs.forEach((doc) => {
+            accountList = { ...accountList, [doc.id]: doc.data() };
+        });
 
         const categoryDocs = await db.collection('users').doc(uid).collection('categories').get();
+        let categoryList = [];
+        categoryDocs.docs.forEach((doc) => {
+            categoryList = { ...categoryList, [doc.id]: doc.data() };
+        });
 
         dispatch({
             type: DATA_REQUEST_SUCCESS,
             payload: {
-                accounts: accountDocs.docs,
-                categories: categoryDocs.docs,
+                accounts: accountList,
+                categories: categoryList,
                 transactions: transactionDocs.docs,
             },
         });

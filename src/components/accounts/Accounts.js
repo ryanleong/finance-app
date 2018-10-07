@@ -4,11 +4,11 @@ import _ from 'lodash';
 
 const Accounts = ({ accounts }) => {
     if (!_.isEmpty(accounts)) {
-        return _.map(accounts, account => (
-            <li key={account.id}>
-                {account.data().name}
+        return _.map(accounts, (account, id) => (
+            <li key={id}>
+                {account.name}
                 {' '}
-                <Link to={`/accounts/edit/${account.id}`}>Edit</Link>
+                <Link to={`/accounts/edit/${id}`}>Edit</Link>
             </li>
         ));
     }
