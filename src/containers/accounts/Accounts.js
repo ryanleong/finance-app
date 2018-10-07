@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
@@ -16,10 +17,17 @@ class Accounts extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Accounts</h1>
-                <ul>
-                    <RenderAccounts accounts={this.props.userData.accounts} />
-                </ul>
+
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Accounts</h1>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <RenderAccounts accounts={this.props.userData.accounts} />
+                    </Row>
+                </Container>
             </React.Fragment>
         );
     }

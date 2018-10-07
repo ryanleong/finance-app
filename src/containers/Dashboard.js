@@ -12,10 +12,10 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Navigation />
                 <h1>Dashboard</h1>
-            </div>
+            </React.Fragment>
         );
     }
 }

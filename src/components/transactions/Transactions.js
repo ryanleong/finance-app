@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {
+    Row, Col, Table, Button, Pagination, PaginationItem, PaginationLink,
+} from 'reactstrap';
+
 import convertIdToName from '../Utilities';
 
 const renderRows = ({
@@ -32,10 +36,10 @@ const renderRows = ({
                         <td>{category}</td>
                         <td>{transaction.description}</td>
                         <td>
-                            <Link to={`/transactions/edit/${id}`}>Edit</Link>
+                            <Button color="primary" tag={Link} to={`/transactions/edit/${id}`}>Edit</Button>
                         </td>
                         <td>
-                            <span onClick={() => { if (window.confirm('Confirm deletion?')) doDelete(id); }} data-key={id}>Delete</span>
+                            <Button color="danger" onClick={() => { if (window.confirm('Confirm deletion?')) doDelete(id); }}>Delete</Button>
                         </td>
                     </tr>,
                 );
@@ -48,34 +52,75 @@ const renderRows = ({
     return null;
 };
 
+const renderPagination = (totalPages, jumpToPage) => {
+    const paginationNumbers = [];
+
+    for (let i = 0; i < totalPages; i += 1) {
+        paginationNumbers.push(
+            <PaginationItem key={i}>
+                <PaginationLink onClick={jumpToPage} data-page={i}>{i + 1}</PaginationLink>
+            </PaginationItem>,
+        );
+    }
+
+    return paginationNumbers;
+};
+
 const Transactions = props => (
     <React.Fragment>
-        <h3>
-            Page:
-            {' '}
-            {props.pageNum + 1}
-        </h3>
-        <table>
-            <thead>
-                <tr>
-                    <td>Date</td>
-                    <td>Name</td>
-                    <td>Amount</td>
-                    <td>Account</td>
-                    <td>Category</td>
-                    <td>Description</td>
-                </tr>
-            </thead>
+        <Row>
+            <Col>
+                <h3>
+                Page:
+                    {' '}
+                    {props.pageNum + 1}
+                </h3>
+            </Col>
+        </Row>
 
-            <tbody>
-                {renderRows(props)}
-            </tbody>
-        </table>
+        <Row>
+            <Col>
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Name</td>
+                            <td>Amount</td>
+                            <td>Account</td>
+                            <td>Category</td>
+                            <td>Description</td>
+                            <td />
+                            <td />
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {renderRows(props)}
+                    </tbody>
+                </Table>
+            </Col>
+        </Row>
+
+        <Row>
+            <Pagination aria-label="Page navigation example">
+                <PaginationItem>
+                    <PaginationLink previous onClick={props.doPaginate} id="prev" />
+                </PaginationItem>
+                {renderPagination(props.totalPages, props.jumpToPage)}
+                <PaginationItem>
+                    <PaginationLink next onClick={props.doPaginate} id="next" />
+                </PaginationItem>
+            </Pagination>
+        </Row>
+
     </React.Fragment>
 );
 
 Transactions.propTypes = {
+    doPaginate: PropTypes.func.isRequired,
+    jumpToPage: PropTypes.func.isRequired,
     pageNum: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
 };
 
 export default Transactions;

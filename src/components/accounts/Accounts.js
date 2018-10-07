@@ -1,15 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import {
+    Col, Card, CardBody, CardTitle, Button, CardText,
+} from 'reactstrap';
 
 const Accounts = ({ accounts }) => {
     if (!_.isEmpty(accounts)) {
         return _.map(accounts, (account, id) => (
-            <li key={id}>
-                {account.name}
-                {' '}
-                <Link to={`/accounts/edit/${id}`}>Edit</Link>
-            </li>
+            <Col lg="3" md="4">
+                <Card>
+                    <CardBody>
+                        <CardTitle>{account.name}</CardTitle>
+                        <CardText>Card Description</CardText>
+                        <Button tag={Link} to={`/accounts/edit/${id}`}>Edit</Button>
+                    </CardBody>
+                </Card>
+            </Col>
         ));
     }
 

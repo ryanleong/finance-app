@@ -59,9 +59,9 @@ class Register extends Component {
     render() {
         return (
             <React.Fragment>
+                <Navigation />
                 <h1>Sign Up</h1>
 
-                <Navigation />
 
                 <form onSubmit={this.onSubmit}>
                     <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />

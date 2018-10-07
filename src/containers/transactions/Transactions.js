@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
 import RenderTransactions from '../../components/transactions/Transactions';
 import fetchData from '../../actions/userDataActions';
 import { deleteTransaction } from '../../actions/transactionsActions';
+
 
 class Transactions extends Component {
     constructor(props) {
@@ -17,6 +19,7 @@ class Transactions extends Component {
         };
 
         this.doPaginate = this.doPaginate.bind(this);
+        this.jumpToPage = this.jumpToPage.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -46,20 +49,27 @@ class Transactions extends Component {
         }
     }
 
+    jumpToPage(evt) {
+        this.setState({
+            pageNum: parseInt(evt.target.getAttribute('data-page'), 10),
+        });
+    }
+
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Navigation />
-                <h1>Transactions</h1>
 
-                <div className="pagination">
-                    <span onClick={this.doPaginate} id="prev">Previous</span>
-                    <span onClick={this.doPaginate} id="next">Next</span>
-                </div>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Transactions</h1>
+                        </Col>
+                    </Row>
 
-
-                {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={process.env.REACT_APP_TRANSACTIONS_PER_PAGE} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} />}
-            </div>
+                    {this.props.userData.transactions.length < 1 ? null : <RenderTransactions pageNum={this.state.pageNum} perPage={process.env.REACT_APP_TRANSACTIONS_PER_PAGE} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} doPaginate={this.doPaginate} totalPages={this.state.totalPages} jumpToPage={this.jumpToPage} />}
+                </Container>
+            </React.Fragment>
         );
     }
 }

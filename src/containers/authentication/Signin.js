@@ -58,8 +58,8 @@ class Signin extends Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Sign in</h1>
                 <Navigation />
+                <h1>Sign in</h1>
 
                 <form onSubmit={this.onSubmit}>
                     <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />
