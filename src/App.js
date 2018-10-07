@@ -13,6 +13,7 @@ import Signout from './containers/authentication/Signout';
 import Landing from './containers/Landing';
 import Dashboard from './containers/Dashboard';
 import Transactions from './containers/transactions/Transactions';
+import TransactionsAdd from './containers/transactions/TransactionsAdd';
 import Categories from './containers/categories/Categories';
 import CategoriesAdd from './containers/categories/CategoriesAdd';
 import Accounts from './containers/accounts/Accounts';
@@ -35,6 +36,7 @@ class App extends Component {
                     <Route exact path="/signout" component={Signout} />
                     <Route exact path="/dashboard" component={AuthCheck(Dashboard)} />
 
+                    <Route exact path="/transactions/add" component={AuthCheck(TransactionsAdd)} />
                     <Route exact path="/transactions" component={AuthCheck(Transactions)} />
 
                     <Route exact path="/categories/add" component={AuthCheck(CategoriesAdd)} />
