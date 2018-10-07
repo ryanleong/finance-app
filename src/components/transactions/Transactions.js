@@ -17,16 +17,15 @@ const renderRows = ({
         for (let i = startIndex; i < endIndex; i += 1) {
             if (transactions[i] !== undefined) {
                 const { id } = transactions[i];
-                const transaction = transactions[i].data();
+                const transaction = transactions[i];
 
                 // Display proper string
                 const category = convertIdToName(categories, transaction.category);
                 const account = convertIdToName(accounts, transaction.account);
-                const date = new Date(transaction.date.seconds * 1000);
 
                 returnJSX.push(
                     <tr key={id}>
-                        <td>{date.toISOString().substring(0, 10)}</td>
+                        <td>{transaction.date.toISOString().substring(0, 10)}</td>
                         <td>{transaction.name}</td>
                         <td>{transaction.amount}</td>
                         <td>{account}</td>
