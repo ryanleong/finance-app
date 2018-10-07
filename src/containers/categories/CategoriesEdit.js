@@ -61,7 +61,7 @@ class CategoriesEdit extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Add Category</h1>
+                <h1>Edit Category</h1>
 
                 <form onSubmit={this.onSubmit}>
                     <input type="text" name="name" placeholder="Category Name" value={this.state.name} onChange={this.onChange} />

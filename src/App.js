@@ -14,6 +14,7 @@ import Landing from './containers/Landing';
 import Dashboard from './containers/Dashboard';
 import Transactions from './containers/transactions/Transactions';
 import TransactionsAdd from './containers/transactions/TransactionsAdd';
+import TransactionsEdit from './containers/transactions/TransactionsEdit';
 import Categories from './containers/categories/Categories';
 import CategoriesAdd from './containers/categories/CategoriesAdd';
 import CategoriesEdit from './containers/categories/CategoriesEdit';
@@ -39,6 +40,7 @@ class App extends Component {
                     <Route exact path="/dashboard" component={AuthCheck(Dashboard)} />
 
                     <Route exact path="/transactions/add" component={AuthCheck(TransactionsAdd)} />
+                    <Route path="/transactions/edit/:id" component={AuthCheck(TransactionsEdit)} />
                     <Route exact path="/transactions" component={AuthCheck(Transactions)} />
 
                     <Route exact path="/categories/add" component={AuthCheck(CategoriesAdd)} />

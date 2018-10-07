@@ -1,9 +1,11 @@
-import { ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE } from './types';
+import {
+    ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE,
+} from './types';
 
 import store from '../store';
 import { db } from '../components/firebase';
 
-const addTransaction = submitData => async (dispatch) => {
+export const addTransaction = submitData => async (dispatch) => {
     const state = store.getState();
     const { uid } = state.authentication;
 
@@ -30,4 +32,29 @@ const addTransaction = submitData => async (dispatch) => {
     }
 };
 
-export default addTransaction;
+export const editTransaction = (submitData, transactionId) => async (dispatch) => {
+    const state = store.getState();
+    const { uid } = state.authentication;
+
+    if (state.userData.isUpdatingAccount) return;
+
+    dispatch({ type: EDIT_TRANSACTION });
+
+    try {
+        await db.collection('users').doc(uid).collection('transactions').doc(transactionId)
+            .update(submitData);
+
+        dispatch({
+            type: EDIT_TRANSACTION_SUCCESS,
+            payload: {
+                ...submitData,
+                id: transactionId,
+            },
+        });
+    } catch (e) {
+        console.log('TCL: }catch -> e', e);
+        dispatch({
+            type: EDIT_TRANSACTION_FAILURE,
+        });
+    }
+};

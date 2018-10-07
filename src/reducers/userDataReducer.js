@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE, ADD_TRANSACTION, ADD_TRANSACTION_SUCCESS, ADD_TRANSACTION_FAILURE, EDIT_ACCOUNT, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE, EDIT_CATEGORY, EDIT_CATEGORY_SUCCESS, EDIT_CATEGORY_FAILURE, EDIT_TRANSACTION, EDIT_TRANSACTION_SUCCESS, EDIT_TRANSACTION_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -11,6 +12,20 @@ const initialState = {
     accounts: {},
     categories: {},
     transactions: [],
+};
+
+const replaceInArray = (transactionList, transaction) => {
+    // Find item index
+    const index = _.findIndex(transactionList, tran => tran.id === transaction.id);
+
+    // Replace transaction is found
+    if (index !== -1) {
+        const returnList = [...transactionList];
+        returnList[index] = transaction;
+        return returnList;
+    }
+
+    return transactionList;
 };
 
 const sortTransactionsDesc = transactions => transactions.sort((a, b) => {
@@ -100,6 +115,7 @@ export default function (state = initialState, action) {
         };
 
     case ADD_TRANSACTION:
+    case EDIT_TRANSACTION:
         return {
             ...state,
             isUpdatingTransaction: true,
@@ -117,7 +133,16 @@ export default function (state = initialState, action) {
             ]),
         };
 
+    case EDIT_TRANSACTION_SUCCESS:
+        return {
+            ...state,
+            isUpdatingTransaction: false,
+            hasFailed: false,
+            transactions: sortTransactionsDesc(replaceInArray(state.transactions, action.payload)),
+        };
+
     case ADD_TRANSACTION_FAILURE:
+    case EDIT_TRANSACTION_FAILURE:
         return {
             ...state,
             isUpdatingTransaction: false,

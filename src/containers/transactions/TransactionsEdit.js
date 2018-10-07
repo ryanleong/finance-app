@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
-import { addTransaction } from '../../actions/transactionsActions';
+import { editTransaction } from '../../actions/transactionsActions';
 
 const INITIAL_STATE = {
     name: '',
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
     debitOrCredit: 'expense',
 };
 
-class TransactionsAdd extends Component {
+class TransactionsEdit extends Component {
     constructor(props) {
         super(props);
 
@@ -27,6 +27,32 @@ class TransactionsAdd extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        // Get label name by id
+        if (state.name === '') {
+            // Get transaction
+            const tempState = _.find(props.userData.transactions, transaction => transaction.id === props.match.params.id);
+            if (tempState === undefined) return null;
+
+            // Remove id
+            const newState = { ...tempState };
+
+            delete newState.id;
+            if (newState.amount < 0) newState.debitOrCredit = 'expense';
+            else newState.debitOrCredit = 'income';
+            newState.date = newState.date.toISOString().substring(0, 10);
+            newState.amount = Math.abs(newState.amount);
+
+
+            return {
+                ...state,
+                ...newState,
+            };
+        }
+
+        return null;
     }
 
     componentDidMount() {
@@ -61,7 +87,7 @@ class TransactionsAdd extends Component {
 
         delete submitData.debitOrCredit;
 
-        this.props.addTransaction(submitData);
+        this.props.editTransaction(submitData, this.props.match.params.id);
     }
 
     onChange(evt) {
@@ -74,7 +100,7 @@ class TransactionsAdd extends Component {
         return (
             <div>
                 <Navigation />
-                <h1>Add Transaction</h1>
+                <h1>Edit Transaction</h1>
 
                 <form onSubmit={this.onSubmit}>
 
@@ -122,10 +148,11 @@ class TransactionsAdd extends Component {
     }
 }
 
-TransactionsAdd.propTypes = {
+TransactionsEdit.propTypes = {
     fetchData: PropTypes.func.isRequired,
-    addTransaction: PropTypes.func.isRequired,
+    editTransaction: PropTypes.func.isRequired,
     userData: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -133,5 +160,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    fetchData, addTransaction,
-})(TransactionsAdd);
+    fetchData, editTransaction,
+})(TransactionsEdit);
