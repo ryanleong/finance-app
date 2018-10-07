@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 // import { db } from '../../components/firebase';
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
-import addAccount from '../../actions/accountsActions';
+import addCategory from '../../actions/categoryActions';
 
 const INITIAL_STATE = {
     name: '',
 };
 
-class AccountsAdd extends Component {
+class CategoriesAdd extends Component {
     constructor(props) {
         super(props);
 
@@ -27,9 +27,9 @@ class AccountsAdd extends Component {
 
     componentDidUpdate(prevProps) {
         // Redirect if successfully added
-        if (prevProps.userData.isUpdatingAccount && !prevProps.userData.hasFailed
-            && !this.props.userData.isUpdatingAccount && !this.props.userData.hasFailed) {
-            this.props.history.push('/accounts');
+        if (prevProps.userData.isUpdatingCategory && !prevProps.userData.hasFailed
+            && !this.props.userData.isUpdatingCategory && !this.props.userData.hasFailed) {
+            this.props.history.push('/categories');
         }
     }
 
@@ -41,17 +41,17 @@ class AccountsAdd extends Component {
 
     onSubmit(evt) {
         evt.preventDefault();
-        this.props.addAccount(this.state.name);
+        this.props.addCategory(this.state.name);
     }
 
     render() {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Add Account</h1>
+                <h1>Add Category</h1>
 
                 <form onSubmit={this.onSubmit}>
-                    <input type="text" name="name" placeholder="Account Name" value={this.state.name} onChange={this.onChange} />
+                    <input type="text" name="name" placeholder="Category Name" value={this.state.name} onChange={this.onChange} />
                     <input type="submit" value="Submit" />
                 </form>
             </React.Fragment>
@@ -59,9 +59,9 @@ class AccountsAdd extends Component {
     }
 }
 
-AccountsAdd.propTypes = {
+CategoriesAdd.propTypes = {
     fetchData: PropTypes.func.isRequired,
-    addAccount: PropTypes.func.isRequired,
+    addCategory: PropTypes.func.isRequired,
     userData: PropTypes.object.isRequired,
 };
 
@@ -69,4 +69,4 @@ const mapStateToProps = state => ({
     userData: state.userData,
 });
 
-export default connect(mapStateToProps, { fetchData, addAccount })(AccountsAdd);
+export default connect(mapStateToProps, { fetchData, addCategory })(CategoriesAdd);

@@ -23,8 +23,6 @@ const addAccount = name => async (dispatch) => {
                 [addedAccountDoc.id]: { name },
             },
         });
-
-        // this.props.history.push('/accounts');
     } catch (e) {
         dispatch({
             type: ADD_ACCOUNT_FAILURE,

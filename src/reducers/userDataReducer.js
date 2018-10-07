@@ -1,10 +1,11 @@
 import {
-    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE,
+    DATA_REQUEST, DATA_REQUEST_SUCCESS, DATA_REQUEST_FAILURE, ADD_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAILURE, ADD_CATEGORY, ADD_CATEGORY_SUCCESS, ADD_CATEGORY_FAILURE,
 } from '../actions/types';
 
 const initialState = {
     isFetching: false,
     isUpdatingAccount: false,
+    isUpdatingCategory: false,
     hasFailed: false,
     accounts: {},
     categories: {},
@@ -57,6 +58,31 @@ export default function (state = initialState, action) {
         return {
             ...state,
             isUpdatingAccount: false,
+            hasFailed: true,
+        };
+
+    case ADD_CATEGORY:
+        return {
+            ...state,
+            isUpdatingCategory: true,
+            hasFailed: false,
+        };
+
+    case ADD_CATEGORY_SUCCESS:
+        return {
+            ...state,
+            isUpdatingCategory: false,
+            hasFailed: false,
+            categories: {
+                ...state.categories,
+                ...action.payload,
+            },
+        };
+
+    case ADD_CATEGORY_FAILURE:
+        return {
+            ...state,
+            isUpdatingCategory: false,
             hasFailed: true,
         };
 
