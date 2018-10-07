@@ -77,7 +77,6 @@ const Transactions = props => (
 
 Transactions.propTypes = {
     pageNum: PropTypes.number.isRequired,
-    // currentState: PropTypes.object.isRequired,
 };
 
 export default Transactions;
