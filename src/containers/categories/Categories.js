@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { Container, Row, Col } from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
@@ -25,7 +26,7 @@ class Categories extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <RenderCategories categories={this.props.userData.categories} doDelete={this.props.deleteCategory} />
+                        {_.isEmpty(this.props.userData.accounts) ? <Col><h4>No Categories</h4></Col> : <RenderCategories categories={this.props.userData.categories} doDelete={this.props.deleteCategory} />}
                     </Row>
                 </Container>
             </React.Fragment>

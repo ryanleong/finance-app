@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { Container, Row, Col } from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
@@ -25,7 +26,7 @@ class Accounts extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <RenderAccounts accounts={this.props.userData.accounts} />
+                        {_.isEmpty(this.props.userData.accounts) ? <Col><h4>No Accounts</h4></Col> : <RenderAccounts accounts={this.props.userData.accounts} />}
                     </Row>
                 </Container>
             </React.Fragment>

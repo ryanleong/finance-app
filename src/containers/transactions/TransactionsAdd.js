@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Container, Row, Col } from 'reactstrap';
+import {
+    Container, Row, Col, Button,
+} from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
 import TransactionsForm from '../../components/transactions/TransactionsForm';
@@ -73,6 +76,18 @@ class TransactionsAdd extends Component {
     }
 
     render() {
+        let bodyContent = <TransactionsForm onSubmit={this.onSubmit} onChange={this.onChange} state={this.state} userData={this.props.userData} />;
+
+
+        if (this.props.userData.accounts.length === 0) {
+            bodyContent = (
+                <React.Fragment>
+                    <h4>Please create account before adding transaction</h4>
+                    <Button color="primary" tag={Link} to="/accounts/add">Create Account</Button>
+                </React.Fragment>
+            );
+        }
+
         return (
             <React.Fragment>
                 <Navigation />
@@ -86,7 +101,7 @@ class TransactionsAdd extends Component {
 
                     <Row>
                         <Col>
-                            <TransactionsForm onSubmit={this.onSubmit} onChange={this.onChange} state={this.state} userData={this.props.userData} />
+                            {bodyContent}
                         </Col>
                     </Row>
 

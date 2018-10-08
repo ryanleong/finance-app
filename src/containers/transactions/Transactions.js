@@ -67,7 +67,7 @@ class Transactions extends Component {
                         </Col>
                     </Row>
 
-                    {this.props.userData.transactions.length < 1 ? <h4>No Transactions</h4> : <RenderTransactions pageNum={this.state.pageNum} perPage={process.env.REACT_APP_TRANSACTIONS_PER_PAGE} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} doPaginate={this.doPaginate} totalPages={this.state.totalPages} jumpToPage={this.jumpToPage} />}
+                    {this.props.userData.transactions.length < 1 ? <Col><h4>No Transactions</h4></Col> : <RenderTransactions pageNum={this.state.pageNum} perPage={process.env.REACT_APP_TRANSACTIONS_PER_PAGE} accounts={this.props.userData.accounts} categories={this.props.userData.categories} transactions={this.props.userData.transactions} doDelete={this.props.deleteTransaction} doPaginate={this.doPaginate} totalPages={this.state.totalPages} jumpToPage={this.jumpToPage} />}
                 </Container>
             </React.Fragment>
         );
