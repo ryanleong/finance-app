@@ -8,7 +8,7 @@ import {
 const Categories = ({ categories, doDelete }) => {
     if (!_.isEmpty(categories)) {
         return _.map(categories, (category, id) => (
-            <Col lg="3" md="4">
+            <Col lg="3" md="4" key={id}>
                 <Card>
                     <CardBody>
                         <CardTitle>{category.name}</CardTitle>

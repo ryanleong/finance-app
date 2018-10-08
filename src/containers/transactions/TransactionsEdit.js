@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import {
+    Container, Row, Col,
+} from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
+import TransactionsForm from '../../components/transactions/TransactionsForm';
 import fetchData from '../../actions/userDataActions';
 import { editTransaction } from '../../actions/transactionsActions';
 
@@ -98,52 +102,24 @@ class TransactionsEdit extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Navigation />
-                <h1>Edit Transaction</h1>
 
-                <form onSubmit={this.onSubmit}>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Edit Transactions</h1>
+                        </Col>
+                    </Row>
 
-                    <input
-                        type="radio"
-                        name="debitOrCredit"
-                        value="income"
-                        checked={this.state.debitOrCredit === 'income'}
-                        onChange={this.onChange}
-                    />
-                    Income
+                    <Row>
+                        <Col>
+                            <TransactionsForm onSubmit={this.onSubmit} onChange={this.onChange} state={this.state} userData={this.props.userData} />
+                        </Col>
+                    </Row>
 
-                    <input
-                        type="radio"
-                        name="debitOrCredit"
-                        value="expense"
-                        checked={this.state.debitOrCredit === 'expense'}
-                        onChange={this.onChange}
-                    />
-                    Expense
-
-
-                    <input type="text" name="name" placeholder="Transaction Name" value={this.state.name} onChange={this.onChange} />
-
-                    <input type="text" name="amount" placeholder="Amount" value={this.state.amount} onChange={this.onChange} />
-
-                    <select name="category" value={this.state.category} onChange={this.onChange}>
-                        <option value="-1">No Category</option>
-                        {_.map(this.props.userData.categories, (category, key) => <option key={key} value={key}>{category.name}</option>)}
-                    </select>
-
-                    <select name="account" value={this.state.account} onChange={this.onChange}>
-                        <option value="-1">No Account</option>
-                        {_.map(this.props.userData.accounts, (account, key) => <option key={key} value={key}>{account.name}</option>)}
-                    </select>
-
-                    <input type="date" name="date" value={this.state.date} onChange={this.onChange} />
-
-                    <textarea name="description" value={this.state.description} onChange={this.onChange} />
-
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
+                </Container>
+            </React.Fragment>
         );
     }
 }

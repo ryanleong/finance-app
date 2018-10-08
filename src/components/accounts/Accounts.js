@@ -8,7 +8,7 @@ import {
 const Accounts = ({ accounts }) => {
     if (!_.isEmpty(accounts)) {
         return _.map(accounts, (account, id) => (
-            <Col lg="3" md="4">
+            <Col lg="3" md="4" key={id}>
                 <Card>
                     <CardBody>
                         <CardTitle>{account.name}</CardTitle>
