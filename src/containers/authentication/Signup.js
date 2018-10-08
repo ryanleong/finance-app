@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import {
+    Container, Row, Col, Form, FormGroup, Label, Input, Button,
+} from 'reactstrap';
 
 import { auth, db } from '../../components/firebase';
 import Navigation from '../../components/Navigation';
@@ -60,15 +63,32 @@ class Register extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Sign Up</h1>
 
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Sign up</h1>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form onSubmit={this.onSubmit}>
+                                <FormGroup>
+                                    <Label for="email">Email</Label>
+                                    <Input type="email" name="email" id="email" value={this.state.email} onChange={this.onChange} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="password">Password</Label>
+                                    <Input type="password" name="password" id="password" value={this.state.password} onChange={this.onChange} />
+                                </FormGroup>
 
-                <form onSubmit={this.onSubmit}>
-                    <input type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} />
-                    <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} />
-                    <input type="password" placeholder="Confirm Password" name="password2" value={this.state.password2} onChange={this.onChange} />
-                    <input type="submit" value="Register" />
-                </form>
+                                <FormGroup>
+                                    <Button color="primary">Register</Button>
+                                </FormGroup>
+                            </Form>
+                        </Col>
+                    </Row>
+                </Container>
             </React.Fragment>
         );
     }
