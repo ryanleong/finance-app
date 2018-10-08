@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 
-// import { db } from '../../components/firebase';
 import Navigation from '../../components/Navigation';
+import CatgoriesForm from '../../components/categories/CategoriesForm';
 import fetchData from '../../actions/userDataActions';
 import { addCategory } from '../../actions/categoryActions';
 
@@ -48,12 +49,20 @@ class CategoriesAdd extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Add Category</h1>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Add Category</h1>
+                        </Col>
+                    </Row>
 
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" name="name" placeholder="Category Name" value={this.state.name} onChange={this.onChange} />
-                    <input type="submit" value="Submit" />
-                </form>
+                    <Row>
+                        <Col>
+                            <CatgoriesForm onSubmit={this.onSubmit} onChange={this.onChange} state={this.state} />
+                        </Col>
+                    </Row>
+
+                </Container>
             </React.Fragment>
         );
     }

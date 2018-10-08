@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+    Container, Row, Col, Form, FormGroup, Label, Input, Button,
+} from 'reactstrap';
 
 import Navigation from '../../components/Navigation';
 import fetchData from '../../actions/userDataActions';
@@ -47,12 +50,28 @@ class AccountsAdd extends Component {
         return (
             <React.Fragment>
                 <Navigation />
-                <h1>Add Account</h1>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1>Add Account</h1>
+                        </Col>
+                    </Row>
 
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" name="name" placeholder="Account Name" value={this.state.name} onChange={this.onChange} />
-                    <input type="submit" value="Submit" />
-                </form>
+                    <Row>
+                        <Col>
+                            <Form onSubmit={this.onSubmit}>
+                                <FormGroup>
+                                    <Label for="name">Account Name</Label>
+                                    <Input type="text" name="name" value={this.state.name} onChange={this.onChange} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Button color="primary">Submit</Button>
+                                </FormGroup>
+                            </Form>
+                        </Col>
+                    </Row>
+
+                </Container>
             </React.Fragment>
         );
     }

@@ -58,7 +58,7 @@ const TransactionForm = props => (
         <Row form>
             <Col>
                 <FormGroup>
-                    <Button>Submit</Button>
+                    <Button color="primary">Submit</Button>
                 </FormGroup>
             </Col>
         </Row>
