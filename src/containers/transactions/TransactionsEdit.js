@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import validate from 'validate.js';
 import {
     Container, Row, Col,
 } from 'reactstrap';
@@ -19,6 +20,27 @@ const INITIAL_STATE = {
     account: '-1',
     description: '',
     debitOrCredit: 'expense',
+    errors: {},
+};
+
+const constraints = {
+    name: {
+        presence: { allowEmpty: false },
+    },
+    date: {
+        presence: { allowEmpty: false },
+    },
+    amount: {
+        presence: { allowEmpty: false },
+        numericality: true,
+    },
+    account: {
+        presence: { allowEmpty: false },
+        exclusion: {
+            within: ['-1'],
+            message: 'Please select an account',
+        },
+    },
 };
 
 class TransactionsEdit extends Component {
@@ -75,6 +97,18 @@ class TransactionsEdit extends Component {
         evt.preventDefault();
 
         const submitData = { ...this.state };
+
+        const formValid = validate(submitData, constraints);
+
+        if (formValid !== undefined) {
+            this.setState({
+                errors: formValid,
+            });
+            return;
+        }
+
+        // Remove error attribute
+        delete submitData.errors;
 
         _.each(submitData, (item, key) => {
             if (item === '' || item === '-1') delete submitData[key];
