@@ -21,6 +21,38 @@ const TransactionForm = props => (
                 </FormGroup>
             </Col>
         </Row>
+        <Row>
+            <Col>
+                <FormGroup tag="fieldset">
+                    <Label>Type of Transaction</Label>
+
+                    <FormGroup check>
+                        <Label check>
+                            <Input
+                                type="radio"
+                                name="debitOrCredit"
+                                value="income"
+                                checked={props.state.debitOrCredit === 'income'}
+                                onChange={props.onChange}
+                            />
+                            Income
+                        </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                        <Label check>
+                            <Input
+                                type="radio"
+                                name="debitOrCredit"
+                                value="expense"
+                                checked={props.state.debitOrCredit === 'expense'}
+                                onChange={props.onChange}
+                            />
+                            Expense
+                        </Label>
+                    </FormGroup>
+                </FormGroup>
+            </Col>
+        </Row>
         <Row form>
             <Col>
                 <FormGroup>
@@ -41,7 +73,7 @@ const TransactionForm = props => (
                 <FormGroup>
                     <Label for="account">Account</Label>
                     <Input type="select" name="account" id="account" value={props.state.account} onChange={props.onChange}>
-                        <option value="-1">No Account</option>
+                        <option value="-1">Select an Account</option>
                         {_.map(props.userData.accounts, (account, key) => <option key={key} value={key}>{account.name}</option>)}
                     </Input>
                 </FormGroup>
